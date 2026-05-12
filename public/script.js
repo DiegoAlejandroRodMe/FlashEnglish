@@ -1074,4 +1074,131 @@ async function searchAndPreview(event) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const ct = res.headers.get('content-type') || '';
     if (!ct.includes('application/json')) throw new Error('No JSON');
-    const json 
+    const json = await res.json();
+    if (typeof json !== 'object' || json === null ||
+        json.responseStatus !== 200 ||
+        typeof json.responseData?.translatedText !== 'string') throw new Error('Inválida');
+    const enWord = sanitizeWord(json.responseData.translatedText);
+    if (!enWord) throw new Error('Vacía');
+    showAddModal(esWord, enWord);
+  } catch {
+    showAddModal(esWord, '', true);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Buscar traducción';
+  }
+}
+
+function showAddModal(es, en, isError = false) {
+  const note = document.getElementById('modal-note');
+  document.getElementById('modal-es').textContent = es;
+  document.getElementById('modal-en').value       = en;
+  note.textContent = isError
+    ? 'No se encontró traducción automática. Escribe la traducción manualmente:'
+    : 'Traducción encontrada. Puedes editarla antes de guardar:';
+  note.style.color = isError ? 'var(--red)' : 'var(--text-soft)';
+  document.getElementById('modal-overlay').classList.add('active');
+  const f = document.getElementById('modal-en'); f.focus(); f.select();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('active');
+}
+
+function confirmAddCard() {
+  const es = sanitizeWord(document.getElementById('modal-es').textContent);
+  const en = sanitizeWord(document.getElementById('modal-en').value);
+  if (!en || !es) { alert('Completa ambos campos antes de guardar.'); return; }
+
+  const data = loadData();
+  if (data.customCards.length >= SECURITY.MAX_CUSTOM_CARDS) {
+    alert(`Límite de ${SECURITY.MAX_CUSTOM_CARDS} tarjetas alcanzado.`);
+    closeModal(); return;
+  }
+  const allCards = [...Object.values(WORDS_BY_LEVEL).flat(), ...data.customCards];
+  if (allCards.some(c => (c.es || c.answer || '').toLowerCase() === es.toLowerCase() ||
+                         c.en.toLowerCase() === en.toLowerCase())) {
+    alert(`La frase "${es}" ya existe en el mazo.`);
+    closeModal(); return;
+  }
+  data.customCards.push({ en, es, hint: 'personalizada' });
+  saveData(data);
+  deck = buildDeck();
+  document.getElementById('input-spanish').value = '';
+  closeModal();
+  renderCustomCards();
+}
+
+function renderCustomCards() {
+  const data      = loadData();
+  const container = document.getElementById('custom-cards-list');
+  if (data.customCards.length === 0) {
+    container.innerHTML = '<p class="empty-msg">Aún no has agregado tarjetas personalizadas.</p>';
+    return;
+  }
+  container.innerHTML = data.customCards.map((card, index) => `
+    <div class="custom-card-item">
+      <div class="custom-card-words">
+        <span class="custom-card-es">${escapeHTML(card.es)}</span>
+        <span class="custom-card-sep">→</span>
+        <span class="custom-card-en">${escapeHTML(card.en)}</span>
+      </div>
+      <button class="btn-delete" data-index="${Number(index)}" title="Eliminar tarjeta">✕</button>
+    </div>
+  `).join('');
+}
+
+function deleteCard(index) {
+  const data = loadData();
+  data.customCards.splice(index, 1);
+  saveData(data);
+  deck = buildDeck();
+  renderCustomCards();
+}
+
+// =============================================
+//  INICIALIZACIÓN Y EVENT LISTENERS
+// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Navegación
+  document.querySelectorAll('.nav-btn[data-section]').forEach(btn => {
+    btn.addEventListener('click', () => showSection(btn.dataset.section));
+  });
+
+  // Estudiar
+  document.getElementById('btn-check').addEventListener('click', checkAnswer);
+  document.getElementById('btn-next').addEventListener('click', nextCard);
+  document.getElementById('answer-input').addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    if (!answered) checkAnswer(); else nextCard();
+  });
+
+  // Progreso
+  document.getElementById('btn-reset').addEventListener('click', resetProgress);
+
+  // Mis Tarjetas
+  document.getElementById('search-form').addEventListener('submit', searchAndPreview);
+  document.getElementById('custom-cards-list').addEventListener('click', e => {
+    const btn = e.target.closest('.btn-delete');
+    if (!btn) return;
+    const idx = parseInt(btn.dataset.index, 10);
+    if (!Number.isNaN(idx)) deleteCard(idx);
+  });
+
+  // Modal
+  document.getElementById('btn-modal-close').addEventListener('click',   closeModal);
+  document.getElementById('btn-modal-cancel').addEventListener('click',  closeModal);
+  document.getElementById('btn-modal-confirm').addEventListener('click', confirmAddCard);
+  document.getElementById('modal-en').addEventListener('keydown', e => {
+    if (e.key === 'Enter') confirmAddCard();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target.id === 'modal-overlay') closeModal();
+  });
+
+  // Arranque
+  deck = buildDeck();
+  showCard(currentIndex);
+  updateLevelBadge();
+});
