@@ -969,7 +969,7 @@ function checkAnswer() {
 // =============================================
 function startAutoNext() {
   const countdown = document.getElementById('card-back-countdown');
-  let remaining   = 8;
+  let remaining   = 10;
 
   function tick() {
     if (countdown) {
@@ -989,7 +989,7 @@ function startAutoNext() {
     autoNextTimer = null;
     if (countdown) countdown.classList.add('hidden');
     if (answered) nextCard();
-  }, 8000);
+  }, 10000);
 }
 
 // =============================================
@@ -1244,4 +1244,4 @@ document.addEventListener('DOMContentLoaded', () => {
   deck = buildDeck();
   showCard(currentIndex);
   updateLevelBadge();
-});
+})
