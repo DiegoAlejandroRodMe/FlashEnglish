@@ -3,6 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!--
+    Content Security Policy:
+    - default-src 'self'           → solo recursos del mismo origen
+    - script-src  'self'           → solo script.js local, sin inline scripts
+    - style-src   'self'           → solo style.css local, sin inline styles
+    - connect-src 'self' https://api.mymemory.translated.net
+                                   → solo la API de traducción externa permitida
+    - img-src     'self' data:     → imágenes locales o data-URI
+    - object-src  'none'           → bloquea Flash, Java plugins, etc.
+    - base-uri    'self'           → previene ataques de base-tag hijacking
+    - form-action 'self'           → los formularios solo envían al mismo origen
+    - frame-ancestors 'none'       → previene clickjacking (equivalente a X-Frame-Options: DENY)
+  -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self';
+                 style-src 'self';
+                 connect-src 'self' https://api.mymemory.translated.net;
+                 img-src 'self' data:;
+                 object-src 'none';
+                 base-uri 'self';
+                 form-action 'self';
+                 frame-ancestors 'none';" />
+
+  <!-- Previene que el navegador infiera un tipo MIME incorrecto (MIME sniffing) -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+
+  <!-- Controla qué información de referrer se comparte con la API externa -->
+  <meta name="referrer" content="no-referrer" />
+
   <title>FlashEnglish</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -70,9 +101,12 @@
 
         <div class="feedback" id="feedback"></div>
 
-        <button class="btn-next hidden" id="btn-next" onclick="nextCard()">
-          Siguiente tarjeta →
-        </button>
+        <div class="next-area">
+          <button class="btn-next hidden" id="btn-next" onclick="nextCard()">
+            Siguiente tarjeta →
+          </button>
+          <span class="auto-next-countdown hidden" id="auto-next-countdown"></span>
+        </div>
 
         <div class="session-stats">
           <div class="stat-pill">

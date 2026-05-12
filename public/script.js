@@ -529,16 +529,17 @@ const LEVEL_NAMES = {
   5: 'Experto',
 };
 const MAX_LEVEL = 5;
-const CORRECT_TO_LEVEL_UP = 20;
+const CORRECT_TO_LEVEL_UP = 10;
 
 // =============================================
 //  ESTADO GLOBAL
 // =============================================
-let deck          = [];
-let currentIndex  = 0;
-let answered      = false;
+let deck           = [];
+let currentIndex   = 0;
+let answered       = false;
 let sessionCorrect = 0;
 let sessionWrong   = 0;
+let autoNextTimer  = null;   // handle del setTimeout de auto-avance
 
 // =============================================
 //  PERSISTENCIA (localStorage)
@@ -547,21 +548,114 @@ const STORAGE_KEY = 'flashenglish_data';
 
 function loadData() {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
-      totalCorrect:   0,
-      totalWrong:     0,
-      hardWords:      {},
-      customCards:    [],
-      currentLevel:   1,
-      levelCorrect:   0,   // correctas acumuladas en el nivel actual
-    };
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return validateData(raw);
   } catch (e) {
-    return { totalCorrect: 0, totalWrong: 0, hardWords: {}, customCards: [], currentLevel: 1, levelCorrect: 0 };
+    // JSON malformado o localStorage no disponible: devolver estado limpio
+    return validateData(null);
   }
 }
 
 function saveData(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+// =============================================
+//  SEGURIDAD: SANITIZACIÓN Y VALIDACIÓN
+// =============================================
+
+// Límites de entrada para prevenir abusos de almacenamiento y payload injection
+const SECURITY = {
+  MAX_WORD_LEN:        80,    // máximo caracteres por palabra
+  MAX_CUSTOM_CARDS:    200,   // máximo tarjetas personalizadas
+  MAX_HARD_WORDS:      1000,  // máximo entradas en hardWords
+  MAX_TOTAL_COUNTER:   999999,
+  ALLOWED_LEVELS:      [1, 2, 3, 4, 5],
+  API_TIMEOUT_MS:      6000,  // timeout de fetch a la API
+};
+
+/**
+ * Escapa caracteres HTML para prevenir XSS cuando se usa innerHTML.
+ * Convierte < > & " ' a sus entidades seguras.
+ */
+function escapeHTML(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+/**
+ * Limpia y valida una palabra de usuario:
+ * - Elimina espacios extremos
+ * - Recorta al máximo permitido
+ * - Elimina caracteres de control (0x00-0x1F, 0x7F)
+ */
+function sanitizeWord(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/[\x00-\x1F\x7F]/g, '')  // control chars
+    .trim()
+    .slice(0, SECURITY.MAX_WORD_LEN);
+}
+
+/**
+ * Valida y sanea el objeto de datos leído de localStorage.
+ * Previene que datos manipulados externos rompan la app o inyecten código.
+ */
+function validateData(raw) {
+  const safe = {
+    totalCorrect:  0,
+    totalWrong:    0,
+    hardWords:     {},
+    customCards:   [],
+    currentLevel:  1,
+    levelCorrect:  0,
+  };
+
+  if (!raw || typeof raw !== 'object') return safe;
+
+  // Números enteros no negativos
+  safe.totalCorrect = (Number.isInteger(raw.totalCorrect) && raw.totalCorrect >= 0)
+    ? Math.min(raw.totalCorrect, SECURITY.MAX_TOTAL_COUNTER) : 0;
+  safe.totalWrong   = (Number.isInteger(raw.totalWrong)   && raw.totalWrong   >= 0)
+    ? Math.min(raw.totalWrong,   SECURITY.MAX_TOTAL_COUNTER) : 0;
+  safe.levelCorrect = (Number.isInteger(raw.levelCorrect) && raw.levelCorrect >= 0)
+    ? Math.min(raw.levelCorrect, CORRECT_TO_LEVEL_UP)        : 0;
+
+  // Nivel permitido
+  safe.currentLevel = SECURITY.ALLOWED_LEVELS.includes(raw.currentLevel)
+    ? raw.currentLevel : 1;
+
+  // hardWords: claves y valores deben ser strings/números limpios
+  if (raw.hardWords && typeof raw.hardWords === 'object' && !Array.isArray(raw.hardWords)) {
+    let count = 0;
+    for (const [k, v] of Object.entries(raw.hardWords)) {
+      if (count >= SECURITY.MAX_HARD_WORDS) break;
+      const cleanKey = sanitizeWord(k);
+      if (cleanKey && typeof v === 'number' && v > 0) {
+        safe.hardWords[cleanKey] = Math.min(Math.floor(v), 9999);
+        count++;
+      }
+    }
+  }
+
+  // customCards: array de objetos { en, es } con strings limpios
+  if (Array.isArray(raw.customCards)) {
+    for (const card of raw.customCards) {
+      if (safe.customCards.length >= SECURITY.MAX_CUSTOM_CARDS) break;
+      if (card && typeof card === 'object') {
+        const en = sanitizeWord(card.en);
+        const es = sanitizeWord(card.es);
+        if (en && es) safe.customCards.push({ en, es });
+      }
+    }
+  }
+
+  return safe;
 }
 
 // =============================================
@@ -622,6 +716,12 @@ function updateLevelBadge() {
 //  MOSTRAR TARJETA
 // =============================================
 function showCard(index) {
+  // Cancelar cualquier auto-avance pendiente
+  if (autoNextTimer !== null) {
+    clearTimeout(autoNextTimer);
+    autoNextTimer = null;
+  }
+
   const card      = deck[index];
   const flashcard = document.getElementById('flashcard');
   const front     = flashcard.querySelector('.card-front');
@@ -634,6 +734,9 @@ function showCard(index) {
   document.getElementById('feedback').textContent = '';
   document.getElementById('feedback').className = 'feedback';
   document.getElementById('btn-next').classList.add('hidden');
+  // Ocultar contador regresivo si estaba visible
+  const countdownEl = document.getElementById('auto-next-countdown');
+  if (countdownEl) countdownEl.classList.add('hidden');
   document.getElementById('answer-area').style.display = 'flex';
 
   flashcard.classList.remove('new-card');
@@ -724,12 +827,57 @@ function checkAnswer() {
   answered = true;
   document.getElementById('btn-next').classList.remove('hidden');
   updateLevelBadge();
+
+  // ── Auto-avance: espera 3 s y pasa a la siguiente tarjeta ──
+  startAutoNext();
+}
+
+// ─────────────────────────────────────────────
+//  AUTO-AVANCE CON CUENTA REGRESIVA
+// ─────────────────────────────────────────────
+function startAutoNext() {
+  const countdownEl = document.getElementById('auto-next-countdown');
+  let remaining = 3;
+
+  function updateDisplay() {
+    if (countdownEl) {
+      countdownEl.textContent = `Siguiente en ${remaining}…`;
+      countdownEl.classList.remove('hidden');
+    }
+  }
+
+  updateDisplay();
+
+  // Tick cada segundo para actualizar el texto
+  const tickInterval = setInterval(() => {
+    remaining--;
+    if (remaining > 0) {
+      updateDisplay();
+    } else {
+      clearInterval(tickInterval);
+    }
+  }, 1000);
+
+  autoNextTimer = setTimeout(() => {
+    clearInterval(tickInterval);
+    autoNextTimer = null;
+    // Solo avanzar si el usuario no lo hizo manualmente ya
+    if (answered) nextCard();
+  }, 3000);
 }
 
 // =============================================
 //  SIGUIENTE TARJETA
 // =============================================
 function nextCard() {
+  // Cancelar el auto-avance si el usuario hizo clic manualmente
+  if (autoNextTimer !== null) {
+    clearTimeout(autoNextTimer);
+    autoNextTimer = null;
+  }
+  const countdownEl = document.getElementById('auto-next-countdown');
+  if (countdownEl) countdownEl.classList.add('hidden');
+
   currentIndex++;
   if (currentIndex >= deck.length) {
     deck = buildDeck();
@@ -810,8 +958,8 @@ function renderProgress() {
 
   hardList.innerHTML = hardWords.map(([word, count]) => `
     <div class="hard-word-item">
-      <span class="hard-word-text">${word}</span>
-      <span class="hard-word-count">${count} error${count > 1 ? 'es' : ''}</span>
+      <span class="hard-word-text">${escapeHTML(word)}</span>
+      <span class="hard-word-count">${escapeHTML(String(count))} error${count > 1 ? 'es' : ''}</span>
     </div>
   `).join('');
 }
@@ -853,25 +1001,63 @@ async function searchAndPreview(event) {
   event.preventDefault();
 
   const esInput = document.getElementById('input-spanish');
-  const esWord  = esInput.value.trim();
+  const esRaw   = esInput.value;
+
+  // Sanitizar y validar la entrada antes de hacer cualquier cosa
+  const esWord = sanitizeWord(esRaw);
   if (!esWord) return;
+
+  // Rechazar entradas que parezcan código o URLs
+  if (/[<>"'`]|https?:\/\//i.test(esWord)) {
+    showAddModal(esWord, '', true);
+    return;
+  }
 
   const btn = document.getElementById('btn-search');
   btn.disabled    = true;
   btn.textContent = 'Buscando...';
 
   try {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(esWord)}&langpair=es|en`;
-    const res  = await fetch(url);
-    const json = await res.json();
-    const enWord = json.responseData?.translatedText || '';
+    // AbortController para cancelar si supera el timeout
+    const controller = new AbortController();
+    const timeoutId  = setTimeout(() => controller.abort(), SECURITY.API_TIMEOUT_MS);
 
-    if (!enWord || json.responseStatus !== 200) {
-      throw new Error('Sin resultado');
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(esWord)}&langpair=es|en`;
+    const res = await fetch(url, {
+      method:  'GET',
+      signal:  controller.signal,
+      headers: { 'Accept': 'application/json' },
+      // No se envían cookies ni credenciales a la API externa
+      credentials: 'omit',
+      mode:        'cors',
+    });
+    clearTimeout(timeoutId);
+
+    // Validar que la respuesta sea JSON y tenga el status HTTP correcto
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) throw new Error('Respuesta no JSON');
+
+    const json = await res.json();
+
+    // Validar estructura esperada de la respuesta
+    if (
+      typeof json !== 'object' || json === null ||
+      json.responseStatus !== 200 ||
+      typeof json.responseData?.translatedText !== 'string'
+    ) {
+      throw new Error('Estructura de respuesta inválida');
     }
+
+    // Sanitizar la traducción recibida antes de mostrarla
+    const enRaw  = json.responseData.translatedText;
+    const enWord = sanitizeWord(enRaw);
+
+    if (!enWord) throw new Error('Traducción vacía');
 
     showAddModal(esWord, enWord);
   } catch (err) {
+    // Cualquier fallo de red, timeout o validación → modo manual
     showAddModal(esWord, '', true);
   } finally {
     btn.disabled    = false;
@@ -909,8 +1095,9 @@ function closeModal() {
 }
 
 function confirmAddCard() {
-  const es = document.getElementById('modal-es').textContent.trim();
-  const en = document.getElementById('modal-en').value.trim();
+  // Sanitizar ambos campos antes de guardar
+  const es = sanitizeWord(document.getElementById('modal-es').textContent);
+  const en = sanitizeWord(document.getElementById('modal-en').value);
 
   if (!en || !es) {
     alert('Completa ambos campos antes de guardar.');
@@ -918,8 +1105,17 @@ function confirmAddCard() {
   }
 
   const data = loadData();
+
+  // Respetar el límite de tarjetas personalizadas
+  if (data.customCards.length >= SECURITY.MAX_CUSTOM_CARDS) {
+    alert(`Has alcanzado el límite de ${SECURITY.MAX_CUSTOM_CARDS} tarjetas personalizadas.`);
+    closeModal();
+    return;
+  }
+
   const allCards = [...Object.values(WORDS_BY_LEVEL).flat(), ...data.customCards];
-  const exists = allCards.some(c => c.es.toLowerCase() === es.toLowerCase());
+  const esNorm   = es.toLowerCase();
+  const exists   = allCards.some(c => c.es.toLowerCase() === esNorm || c.en.toLowerCase() === en.toLowerCase());
 
   if (exists) {
     alert(`La palabra "${es}" ya existe en el mazo.`);
@@ -927,7 +1123,6 @@ function confirmAddCard() {
     return;
   }
 
-  // Guardamos como { en, es }
   data.customCards.push({ en, es });
   saveData(data);
   deck = buildDeck();
@@ -952,11 +1147,11 @@ function renderCustomCards() {
   container.innerHTML = data.customCards.map((card, index) => `
     <div class="custom-card-item">
       <div class="custom-card-words">
-        <span class="custom-card-es">${card.es}</span>
+        <span class="custom-card-es">${escapeHTML(card.es)}</span>
         <span class="custom-card-sep">→</span>
-        <span class="custom-card-en">${card.en}</span>
+        <span class="custom-card-en">${escapeHTML(card.en)}</span>
       </div>
-      <button class="btn-delete" onclick="deleteCard(${index})" title="Eliminar tarjeta">✕</button>
+      <button class="btn-delete" onclick="deleteCard(${Number(index)})" title="Eliminar tarjeta">✕</button>
     </div>
   `).join('');
 }
