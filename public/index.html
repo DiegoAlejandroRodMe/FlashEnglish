@@ -47,9 +47,9 @@
     <div class="header-inner">
       <h1 class="logo">Flash<span>English</span></h1>
       <nav class="nav">
-        <button class="nav-btn active" id="btn-study"    onclick="showSection('study')">Estudiar</button>
-        <button class="nav-btn"        id="btn-cards"    onclick="showSection('cards')">Mis Tarjetas</button>
-        <button class="nav-btn"        id="btn-progress" onclick="showSection('progress')">Progreso</button>
+        <button class="nav-btn active" id="btn-study"    data-section="study">Estudiar</button>
+        <button class="nav-btn"        id="btn-cards"    data-section="cards">Mis Tarjetas</button>
+        <button class="nav-btn"        id="btn-progress" data-section="progress">Progreso</button>
       </nav>
     </div>
   </header>
@@ -66,7 +66,7 @@
           <div class="level-bar-track">
             <div id="level-progress-bar" class="level-bar-fill"></div>
           </div>
-          <span id="level-correct-count" class="level-counter">0/20 para subir de nivel</span>
+          <span id="level-correct-count" class="level-counter">0/10 para subir de nivel</span>
         </div>
 
         <!-- Tarjeta principal -->
@@ -96,15 +96,13 @@
             autocorrect="off"
             spellcheck="false"
           />
-          <button class="btn-check" id="btn-check" onclick="checkAnswer()">Verificar</button>
+          <button class="btn-check" id="btn-check">Verificar</button>
         </div>
 
         <div class="feedback" id="feedback"></div>
 
         <div class="next-area">
-          <button class="btn-next hidden" id="btn-next" onclick="nextCard()">
-            Siguiente tarjeta →
-          </button>
+          <button class="btn-next hidden" id="btn-next">Siguiente tarjeta →</button>
           <span class="auto-next-countdown hidden" id="auto-next-countdown"></span>
         </div>
 
@@ -128,8 +126,7 @@
         <h2 class="section-title">Mis Tarjetas</h2>
         <p class="section-subtitle">Escribe una palabra en español y buscamos su traducción al inglés automáticamente.</p>
 
-        <!-- Formulario de búsqueda -->
-        <form class="add-card-form" onsubmit="searchAndPreview(event)">
+        <form class="add-card-form" id="search-form">
           <div class="search-row">
             <div class="form-group">
               <label for="input-spanish">Palabra en español</label>
@@ -147,10 +144,7 @@
           </div>
         </form>
 
-        <!-- Lista de tarjetas personalizadas -->
-        <div class="custom-cards-list" id="custom-cards-list">
-          <!-- Se llena con JS -->
-        </div>
+        <div class="custom-cards-list" id="custom-cards-list"></div>
       </div>
     </section>
 
@@ -159,7 +153,6 @@
       <div class="progress-area">
         <h2 class="section-title">Tu Progreso</h2>
 
-        <!-- Nivel actual -->
         <div class="current-level-card">
           <span id="current-level-display">Nivel 1 — Principiante</span>
         </div>
@@ -197,7 +190,7 @@
           </div>
         </div>
 
-        <button class="btn-reset" onclick="resetProgress()">Reiniciar progreso</button>
+        <button class="btn-reset" id="btn-reset">Reiniciar progreso</button>
       </div>
     </section>
 
@@ -206,7 +199,7 @@
   <!-- MODAL DE CONFIRMACIÓN -->
   <div id="modal-overlay" class="modal-overlay">
     <div class="modal">
-      <button class="modal-close" onclick="closeModal()" title="Cerrar">✕</button>
+      <button class="modal-close" id="btn-modal-close" title="Cerrar">✕</button>
       <h3 class="modal-title">Agregar tarjeta</h3>
       <p id="modal-note" class="modal-note">Traducción encontrada. Puedes editarla antes de guardar:</p>
 
@@ -223,8 +216,8 @@
       </div>
 
       <div class="modal-actions">
-        <button class="btn-modal-cancel" onclick="closeModal()">Cancelar</button>
-        <button class="btn-modal-confirm" onclick="confirmAddCard()">✓ Agregar al mazo</button>
+        <button class="btn-modal-cancel" id="btn-modal-cancel">Cancelar</button>
+        <button class="btn-modal-confirm" id="btn-modal-confirm">✓ Agregar al mazo</button>
       </div>
     </div>
   </div>

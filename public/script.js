@@ -5,7 +5,6 @@
 
 const WORDS_BY_LEVEL = {
   1: [
-    // Nivel 1 — Básico (100 palabras cotidianas)
     { en: 'apple',       es: 'manzana' },
     { en: 'water',       es: 'agua' },
     { en: 'house',       es: 'casa' },
@@ -108,7 +107,6 @@ const WORDS_BY_LEVEL = {
   ],
 
   2: [
-    // Nivel 2 — Elemental (100 palabras)
     { en: 'airport',     es: 'aeropuerto' },
     { en: 'ticket',      es: 'boleto' },
     { en: 'travel',      es: 'viaje' },
@@ -188,7 +186,6 @@ const WORDS_BY_LEVEL = {
     { en: 'elephant',    es: 'elefante' },
     { en: 'monkey',      es: 'mono' },
     { en: 'snake',       es: 'serpiente' },
-    { en: 'color',       es: 'color' },
     { en: 'red',         es: 'rojo' },
     { en: 'blue',        es: 'azul' },
     { en: 'green',       es: 'verde' },
@@ -212,7 +209,6 @@ const WORDS_BY_LEVEL = {
   ],
 
   3: [
-    // Nivel 3 — Intermedio (100 palabras)
     { en: 'ambition',    es: 'ambición' },
     { en: 'achieve',     es: 'lograr' },
     { en: 'adventure',   es: 'aventura' },
@@ -256,7 +252,6 @@ const WORDS_BY_LEVEL = {
     { en: 'company',     es: 'empresa' },
     { en: 'industry',    es: 'industria' },
     { en: 'economy',     es: 'economía' },
-    { en: 'market',      es: 'mercado' },
     { en: 'investment',  es: 'inversión' },
     { en: 'profit',      es: 'ganancia' },
     { en: 'loss',        es: 'pérdida' },
@@ -315,7 +310,6 @@ const WORDS_BY_LEVEL = {
   ],
 
   4: [
-    // Nivel 4 — Avanzado (100 palabras)
     { en: 'ambiguous',   es: 'ambiguo' },
     { en: 'diligent',    es: 'diligente' },
     { en: 'eloquent',    es: 'elocuente' },
@@ -368,7 +362,7 @@ const WORDS_BY_LEVEL = {
     { en: 'represent',   es: 'representar' },
     { en: 'accommodate', es: 'acomodar' },
     { en: 'acknowledge', es: 'reconocer' },
-    { en: 'breakthrough', es: 'avance decisivo' },
+    { en: 'breakthrough',es: 'avance decisivo' },
     { en: 'circumstance',es: 'circunstancia' },
     { en: 'consequence', es: 'consecuencia' },
     { en: 'controversy', es: 'controversia' },
@@ -417,110 +411,111 @@ const WORDS_BY_LEVEL = {
   ],
 
   5: [
-    // Nivel 5 — Experto (100 palabras)
-    { en: 'abdicate',    es: 'abdicar' },
-    { en: 'aberration',  es: 'aberración' },
-    { en: 'abstruse',    es: 'abstruso' },
-    { en: 'acrimony',    es: 'acrimonia' },
-    { en: 'acumen',      es: 'perspicacia' },
-    { en: 'admonish',    es: 'amonestar' },
-    { en: 'adroit',      es: 'hábil / diestro' },
-    { en: 'affable',     es: 'afable' },
-    { en: 'alacrity',    es: 'diligencia / presteza' },
-    { en: 'alleviate',   es: 'aliviar' },
-    { en: 'amalgamate',  es: 'amalgamar' },
-    { en: 'ameliorate',  es: 'mejorar' },
-    { en: 'anachronism', es: 'anacronismo' },
-    { en: 'anomalous',   es: 'anómalo' },
-    { en: 'antipathy',   es: 'antipatía' },
-    { en: 'apathy',      es: 'apatía' },
-    { en: 'arcane',      es: 'arcano / misterioso' },
-    { en: 'arduous',     es: 'arduo' },
-    { en: 'articulate',  es: 'articular / elocuente' },
-    { en: 'ascertain',   es: 'determinar / averiguar' },
-    { en: 'astute',      es: 'astuto' },
-    { en: 'atrophy',     es: 'atrofia' },
-    { en: 'audacious',   es: 'audaz' },
-    { en: 'augment',     es: 'aumentar' },
-    { en: 'auspicious',  es: 'propicio / auspicioso' },
-    { en: 'banal',       es: 'banal' },
-    { en: 'benevolent',  es: 'benevolente' },
-    { en: 'cacophony',   es: 'cacofonía' },
-    { en: 'candid',      es: 'cándido / franco' },
-    { en: 'capricious',  es: 'caprichoso' },
-    { en: 'caustic',     es: 'cáustico' },
-    { en: 'circumvent',  es: 'eludir' },
-    { en: 'clandestine', es: 'clandestino' },
-    { en: 'coerce',      es: 'coaccionar' },
-    { en: 'cogent',      es: 'convincente' },
-    { en: 'coherent',    es: 'coherente' },
-    { en: 'commensurate',es: 'proporcional' },
-    { en: 'convoluted',  es: 'enrevesado' },
-    { en: 'corroborate', es: 'corroborar' },
-    { en: 'cryptic',     es: 'críptico' },
-    { en: 'culpable',    es: 'culpable' },
-    { en: 'curtail',     es: 'reducir / recortar' },
-    { en: 'cynical',     es: 'cínico' },
-    { en: 'daunt',       es: 'intimidar' },
-    { en: 'debilitate',  es: 'debilitar' },
-    { en: 'decipher',    es: 'descifrar' },
-    { en: 'deference',   es: 'deferencia / respeto' },
-    { en: 'defunct',     es: 'difunto / desaparecido' },
-    { en: 'denigrate',   es: 'denigrar' },
-    { en: 'denounce',    es: 'denunciar' },
-    { en: 'deplete',     es: 'agotar' },
-    { en: 'deride',      es: 'ridiculizar' },
-    { en: 'deter',       es: 'disuadir' },
-    { en: 'devoid',      es: 'desprovisto' },
-    { en: 'dichotomy',   es: 'dicotomía' },
-    { en: 'diminish',    es: 'disminuir' },
-    { en: 'discern',     es: 'discernir' },
-    { en: 'disdain',     es: 'desdén' },
-    { en: 'disparate',   es: 'dispar' },
-    { en: 'dogmatic',    es: 'dogmático' },
-    { en: 'duplicity',   es: 'duplicidad' },
-    { en: 'ebullient',   es: 'efusivo' },
-    { en: 'eclectic',    es: 'ecléctico' },
-    { en: 'elucidate',   es: 'elucidar / aclarar' },
-    { en: 'emulate',     es: 'emular' },
-    { en: 'enigmatic',   es: 'enigmático' },
-    { en: 'ephemeral',   es: 'efímero' },
-    { en: 'erratic',     es: 'errático' },
-    { en: 'esoteric',    es: 'esotérico' },
-    { en: 'exacerbate',  es: 'exacerbar' },
-    { en: 'exonerate',   es: 'exonerar' },
-    { en: 'expedite',    es: 'agilizar' },
-    { en: 'exquisite',   es: 'exquisito' },
-    { en: 'fallacious',  es: 'falaz' },
-    { en: 'fathom',      es: 'comprender / sondar' },
-    { en: 'fervent',     es: 'ferviente' },
-    { en: 'flagrant',    es: 'flagrante' },
-    { en: 'fleeting',    es: 'fugaz' },
-    { en: 'flippant',    es: 'frívolo' },
-    { en: 'foreboding',  es: 'presagio' },
-    { en: 'fortuitous',  es: 'fortuito' },
-    { en: 'garrulous',   es: 'garrulo / parlanchín' },
-    { en: 'gratuitous',  es: 'gratuito' },
-    { en: 'guile',       es: 'astucia / engaño' },
-    { en: 'hapless',     es: 'desafortunado' },
-    { en: 'harangue',    es: 'arenga' },
-    { en: 'hegemony',    es: 'hegemonía' },
-    { en: 'heresy',      es: 'herejía' },
-    { en: 'hypocritical',es: 'hipócrita' },
-    { en: 'idiosyncrasy',es: 'idiosincrasia' },
-    { en: 'immutable',   es: 'inmutable' },
-    { en: 'impeccable',  es: 'impecable' },
-    { en: 'impetuous',   es: 'impetuoso' },
-    { en: 'impudent',    es: 'impudente / insolente' },
-    { en: 'inadvertent', es: 'inadvertido' },
-    { en: 'incognito',   es: 'incógnito' },
+    { en: 'abdicate',     es: 'abdicar' },
+    { en: 'aberration',   es: 'aberración' },
+    { en: 'abstruse',     es: 'abstruso' },
+    { en: 'acrimony',     es: 'acrimonia' },
+    { en: 'acumen',       es: 'perspicacia' },
+    { en: 'admonish',     es: 'amonestar' },
+    { en: 'adroit',       es: 'hábil / diestro' },
+    { en: 'affable',      es: 'afable' },
+    { en: 'alacrity',     es: 'diligencia / presteza' },
+    { en: 'alleviate',    es: 'aliviar' },
+    { en: 'amalgamate',   es: 'amalgamar' },
+    { en: 'ameliorate',   es: 'mejorar' },
+    { en: 'anachronism',  es: 'anacronismo' },
+    { en: 'anomalous',    es: 'anómalo' },
+    { en: 'antipathy',    es: 'antipatía' },
+    { en: 'apathy',       es: 'apatía' },
+    { en: 'arcane',       es: 'arcano / misterioso' },
+    { en: 'arduous',      es: 'arduo' },
+    { en: 'articulate',   es: 'articular / elocuente' },
+    { en: 'ascertain',    es: 'determinar / averiguar' },
+    { en: 'astute',       es: 'astuto' },
+    { en: 'atrophy',      es: 'atrofia' },
+    { en: 'audacious',    es: 'audaz' },
+    { en: 'augment',      es: 'aumentar' },
+    { en: 'auspicious',   es: 'propicio / auspicioso' },
+    { en: 'banal',        es: 'banal' },
+    { en: 'benevolent',   es: 'benevolente' },
+    { en: 'cacophony',    es: 'cacofonía' },
+    { en: 'candid',       es: 'cándido / franco' },
+    { en: 'capricious',   es: 'caprichoso' },
+    { en: 'caustic',      es: 'cáustico' },
+    { en: 'circumvent',   es: 'eludir' },
+    { en: 'clandestine',  es: 'clandestino' },
+    { en: 'coerce',       es: 'coaccionar' },
+    { en: 'cogent',       es: 'convincente' },
+    { en: 'coherent',     es: 'coherente' },
+    { en: 'commensurate', es: 'proporcional' },
+    { en: 'convoluted',   es: 'enrevesado' },
+    { en: 'corroborate',  es: 'corroborar' },
+    { en: 'cryptic',      es: 'críptico' },
+    { en: 'culpable',     es: 'culpable' },
+    { en: 'curtail',      es: 'reducir / recortar' },
+    { en: 'cynical',      es: 'cínico' },
+    { en: 'daunt',        es: 'intimidar' },
+    { en: 'debilitate',   es: 'debilitar' },
+    { en: 'decipher',     es: 'descifrar' },
+    { en: 'deference',    es: 'deferencia / respeto' },
+    { en: 'defunct',      es: 'difunto / desaparecido' },
+    { en: 'denigrate',    es: 'denigrar' },
+    { en: 'denounce',     es: 'denunciar' },
+    { en: 'deplete',      es: 'agotar' },
+    { en: 'deride',       es: 'ridiculizar' },
+    { en: 'deter',        es: 'disuadir' },
+    { en: 'devoid',       es: 'desprovisto' },
+    { en: 'dichotomy',    es: 'dicotomía' },
+    { en: 'diminish',     es: 'disminuir' },
+    { en: 'discern',      es: 'discernir' },
+    { en: 'disdain',      es: 'desdén' },
+    { en: 'disparate',    es: 'dispar' },
+    { en: 'dogmatic',     es: 'dogmático' },
+    { en: 'duplicity',    es: 'duplicidad' },
+    { en: 'ebullient',    es: 'efusivo' },
+    { en: 'eclectic',     es: 'ecléctico' },
+    { en: 'elucidate',    es: 'elucidar / aclarar' },
+    { en: 'emulate',      es: 'emular' },
+    { en: 'enigmatic',    es: 'enigmático' },
+    { en: 'ephemeral',    es: 'efímero' },
+    { en: 'erratic',      es: 'errático' },
+    { en: 'esoteric',     es: 'esotérico' },
+    { en: 'exacerbate',   es: 'exacerbar' },
+    { en: 'exonerate',    es: 'exonerar' },
+    { en: 'expedite',     es: 'agilizar' },
+    { en: 'exquisite',    es: 'exquisito' },
+    { en: 'fallacious',   es: 'falaz' },
+    { en: 'fathom',       es: 'comprender / sondar' },
+    { en: 'fervent',      es: 'ferviente' },
+    { en: 'flagrant',     es: 'flagrante' },
+    { en: 'fleeting',     es: 'fugaz' },
+    { en: 'flippant',     es: 'frívolo' },
+    { en: 'foreboding',   es: 'presagio' },
+    { en: 'fortuitous',   es: 'fortuito' },
+    { en: 'garrulous',    es: 'garrulo / parlanchín' },
+    { en: 'gratuitous',   es: 'gratuito' },
+    { en: 'guile',        es: 'astucia / engaño' },
+    { en: 'hapless',      es: 'desafortunado' },
+    { en: 'harangue',     es: 'arenga' },
+    { en: 'hegemony',     es: 'hegemonía' },
+    { en: 'heresy',       es: 'herejía' },
+    { en: 'hypocritical', es: 'hipócrita' },
+    { en: 'idiosyncrasy', es: 'idiosincrasia' },
+    { en: 'immutable',    es: 'inmutable' },
+    { en: 'impeccable',   es: 'impecable' },
+    { en: 'impetuous',    es: 'impetuoso' },
+    { en: 'impudent',     es: 'impudente / insolente' },
+    { en: 'inadvertent',  es: 'inadvertido' },
+    { en: 'incognito',    es: 'incógnito' },
     { en: 'indefatigable',es: 'infatigable' },
-    { en: 'indignant',   es: 'indignado' },
-    { en: 'infallible',  es: 'infalible' },
+    { en: 'indignant',    es: 'indignado' },
+    { en: 'infallible',   es: 'infalible' },
   ],
 };
 
-// Niveles de dificultad y cuántas correctas se necesitan para subir
+// =============================================
+//  CONFIGURACIÓN DE NIVELES
+// =============================================
 const LEVEL_NAMES = {
   1: 'Principiante',
   2: 'Elemental',
@@ -528,109 +523,53 @@ const LEVEL_NAMES = {
   4: 'Avanzado',
   5: 'Experto',
 };
-const MAX_LEVEL = 5;
+const MAX_LEVEL          = 5;
 const CORRECT_TO_LEVEL_UP = 10;
 
 // =============================================
-//  ESTADO GLOBAL
+//  SEGURIDAD: CONSTANTES Y FUNCIONES
 // =============================================
-let deck           = [];
-let currentIndex   = 0;
-let answered       = false;
-let sessionCorrect = 0;
-let sessionWrong   = 0;
-let autoNextTimer  = null;   // handle del setTimeout de auto-avance
-
-// =============================================
-//  PERSISTENCIA (localStorage)
-// =============================================
-const STORAGE_KEY = 'flashenglish_data';
-
-function loadData() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return validateData(raw);
-  } catch (e) {
-    // JSON malformado o localStorage no disponible: devolver estado limpio
-    return validateData(null);
-  }
-}
-
-function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-// =============================================
-//  SEGURIDAD: SANITIZACIÓN Y VALIDACIÓN
-// =============================================
-
-// Límites de entrada para prevenir abusos de almacenamiento y payload injection
 const SECURITY = {
-  MAX_WORD_LEN:        80,    // máximo caracteres por palabra
-  MAX_CUSTOM_CARDS:    200,   // máximo tarjetas personalizadas
-  MAX_HARD_WORDS:      1000,  // máximo entradas en hardWords
-  MAX_TOTAL_COUNTER:   999999,
-  ALLOWED_LEVELS:      [1, 2, 3, 4, 5],
-  API_TIMEOUT_MS:      6000,  // timeout de fetch a la API
+  MAX_WORD_LEN:      80,
+  MAX_CUSTOM_CARDS:  200,
+  MAX_HARD_WORDS:    1000,
+  MAX_TOTAL_COUNTER: 999999,
+  ALLOWED_LEVELS:    [1, 2, 3, 4, 5],
+  API_TIMEOUT_MS:    6000,
 };
 
-/**
- * Escapa caracteres HTML para prevenir XSS cuando se usa innerHTML.
- * Convierte < > & " ' a sus entidades seguras.
- */
 function escapeHTML(str) {
   if (typeof str !== 'string') return '';
   return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;');
+    .replace(/&/g,  '&amp;')
+    .replace(/</g,  '&lt;')
+    .replace(/>/g,  '&gt;')
+    .replace(/"/g,  '&quot;')
+    .replace(/'/g,  '&#x27;');
 }
 
-/**
- * Limpia y valida una palabra de usuario:
- * - Elimina espacios extremos
- * - Recorta al máximo permitido
- * - Elimina caracteres de control (0x00-0x1F, 0x7F)
- */
 function sanitizeWord(str) {
   if (typeof str !== 'string') return '';
-  return str
-    .replace(/[\x00-\x1F\x7F]/g, '')  // control chars
-    .trim()
-    .slice(0, SECURITY.MAX_WORD_LEN);
+  return str.replace(/[\x00-\x1F\x7F]/g, '').trim().slice(0, SECURITY.MAX_WORD_LEN);
 }
 
-/**
- * Valida y sanea el objeto de datos leído de localStorage.
- * Previene que datos manipulados externos rompan la app o inyecten código.
- */
 function validateData(raw) {
   const safe = {
-    totalCorrect:  0,
-    totalWrong:    0,
-    hardWords:     {},
-    customCards:   [],
-    currentLevel:  1,
-    levelCorrect:  0,
+    totalCorrect: 0, totalWrong: 0,
+    hardWords: {}, customCards: [],
+    currentLevel: 1, levelCorrect: 0,
   };
-
   if (!raw || typeof raw !== 'object') return safe;
 
-  // Números enteros no negativos
   safe.totalCorrect = (Number.isInteger(raw.totalCorrect) && raw.totalCorrect >= 0)
     ? Math.min(raw.totalCorrect, SECURITY.MAX_TOTAL_COUNTER) : 0;
-  safe.totalWrong   = (Number.isInteger(raw.totalWrong)   && raw.totalWrong   >= 0)
-    ? Math.min(raw.totalWrong,   SECURITY.MAX_TOTAL_COUNTER) : 0;
+  safe.totalWrong   = (Number.isInteger(raw.totalWrong) && raw.totalWrong >= 0)
+    ? Math.min(raw.totalWrong, SECURITY.MAX_TOTAL_COUNTER) : 0;
   safe.levelCorrect = (Number.isInteger(raw.levelCorrect) && raw.levelCorrect >= 0)
-    ? Math.min(raw.levelCorrect, CORRECT_TO_LEVEL_UP)        : 0;
-
-  // Nivel permitido
+    ? Math.min(raw.levelCorrect, CORRECT_TO_LEVEL_UP) : 0;
   safe.currentLevel = SECURITY.ALLOWED_LEVELS.includes(raw.currentLevel)
     ? raw.currentLevel : 1;
 
-  // hardWords: claves y valores deben ser strings/números limpios
   if (raw.hardWords && typeof raw.hardWords === 'object' && !Array.isArray(raw.hardWords)) {
     let count = 0;
     for (const [k, v] of Object.entries(raw.hardWords)) {
@@ -642,8 +581,6 @@ function validateData(raw) {
       }
     }
   }
-
-  // customCards: array de objetos { en, es } con strings limpios
   if (Array.isArray(raw.customCards)) {
     for (const card of raw.customCards) {
       if (safe.customCards.length >= SECURITY.MAX_CUSTOM_CARDS) break;
@@ -654,8 +591,76 @@ function validateData(raw) {
       }
     }
   }
-
   return safe;
+}
+
+// =============================================
+//  PERSISTENCIA
+// =============================================
+const STORAGE_KEY = 'flashenglish_data';
+
+function loadData() {
+  try {
+    return validateData(JSON.parse(localStorage.getItem(STORAGE_KEY)));
+  } catch (e) {
+    return validateData(null);
+  }
+}
+
+function saveData(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+// =============================================
+//  ESTADO GLOBAL
+// =============================================
+let deck           = [];   // baraja activa de la sesión (sin repetición)
+let currentIndex   = 0;
+let answered       = false;
+let sessionCorrect = 0;
+let sessionWrong   = 0;
+let autoNextTimer  = null;
+
+// =============================================
+//  CONSTRUCCIÓN DEL MAZO — SIN REPETICIÓN,
+//  DIFICULTAD PROGRESIVA
+//
+//  Estructura de la sesión:
+//  • Primero se presentan todas las palabras del
+//    nivel 1 (mezcladas), luego las del nivel 2, etc.
+//    hasta el nivel desbloqueado.
+//  • Finalmente se añaden las tarjetas personalizadas
+//    al final del bloque más alto.
+//  • Al terminar el mazo completo se reconstruye
+//    con un orden diferente (re-shuffle por nivel),
+//    garantizando que no se repita el mismo orden.
+// =============================================
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildDeck() {
+  const data  = loadData();
+  const level = data.currentLevel;
+
+  // Bloque de cada nivel mezclado individualmente,
+  // luego concatenados en orden de dificultad 1 → level
+  let ordered = [];
+  for (let l = 1; l <= level; l++) {
+    ordered = ordered.concat(shuffle(WORDS_BY_LEVEL[l]));
+  }
+
+  // Tarjetas personalizadas al final (también mezcladas)
+  if (data.customCards.length > 0) {
+    ordered = ordered.concat(shuffle(data.customCards));
+  }
+
+  return ordered;
 }
 
 // =============================================
@@ -671,36 +676,13 @@ function showSection(name) {
 }
 
 // =============================================
-//  CONSTRUCCIÓN DEL MAZO
-// =============================================
-function buildDeck() {
-  const data  = loadData();
-  const level = data.currentLevel;
-
-  // Incluir palabras del nivel actual y anteriores
-  let all = [];
-  for (let l = 1; l <= level; l++) {
-    all = all.concat(WORDS_BY_LEVEL[l]);
-  }
-  all = all.concat(data.customCards);
-
-  // Fisher-Yates shuffle
-  for (let i = all.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [all[i], all[j]] = [all[j], all[i]];
-  }
-  return all;
-}
-
-// =============================================
 //  INDICADOR DE NIVEL
 // =============================================
 function updateLevelBadge() {
   const data  = loadData();
   const badge = document.getElementById('level-badge');
-  if (badge) {
-    badge.textContent = `Nivel ${data.currentLevel} · ${LEVEL_NAMES[data.currentLevel]}`;
-  }
+  if (badge) badge.textContent = `Nivel ${data.currentLevel} · ${LEVEL_NAMES[data.currentLevel]}`;
+
   const bar = document.getElementById('level-progress-bar');
   if (bar) {
     const pct = Math.min((data.levelCorrect / CORRECT_TO_LEVEL_UP) * 100, 100);
@@ -708,7 +690,11 @@ function updateLevelBadge() {
   }
   const counter = document.getElementById('level-correct-count');
   if (counter) {
-    counter.textContent = `${data.levelCorrect}/${CORRECT_TO_LEVEL_UP} para subir de nivel`;
+    if (data.currentLevel < MAX_LEVEL) {
+      counter.textContent = `${data.levelCorrect}/${CORRECT_TO_LEVEL_UP} para subir de nivel`;
+    } else {
+      counter.textContent = '¡Nivel máximo alcanzado! 🏆';
+    }
   }
 }
 
@@ -716,7 +702,6 @@ function updateLevelBadge() {
 //  MOSTRAR TARJETA
 // =============================================
 function showCard(index) {
-  // Cancelar cualquier auto-avance pendiente
   if (autoNextTimer !== null) {
     clearTimeout(autoNextTimer);
     autoNextTimer = null;
@@ -725,30 +710,31 @@ function showCard(index) {
   const card      = deck[index];
   const flashcard = document.getElementById('flashcard');
   const front     = flashcard.querySelector('.card-front');
+  const input     = document.getElementById('answer-input');
+  const countdown = document.getElementById('auto-next-countdown');
+  const btnNext   = document.getElementById('btn-next');
 
   flashcard.classList.remove('flipped');
   front.classList.remove('correct-state', 'wrong-state');
-  document.getElementById('answer-input').classList.remove('correct-input', 'wrong-input');
-  document.getElementById('answer-input').value = '';
-  document.getElementById('answer-input').disabled = false;
+  input.classList.remove('correct-input', 'wrong-input');
+  input.value    = '';
+  input.disabled = false;
   document.getElementById('feedback').textContent = '';
-  document.getElementById('feedback').className = 'feedback';
-  document.getElementById('btn-next').classList.add('hidden');
-  // Ocultar contador regresivo si estaba visible
-  const countdownEl = document.getElementById('auto-next-countdown');
-  if (countdownEl) countdownEl.classList.add('hidden');
+  document.getElementById('feedback').className   = 'feedback';
+  btnNext.classList.add('hidden');
+  if (countdown) countdown.classList.add('hidden');
   document.getElementById('answer-area').style.display = 'flex';
 
   flashcard.classList.remove('new-card');
-  void flashcard.offsetWidth;
+  void flashcard.offsetWidth; // reflow para reiniciar animación
   flashcard.classList.add('new-card');
 
-  document.getElementById('card-word').textContent = card.en;
+  document.getElementById('card-word').textContent        = card.en;
   document.getElementById('card-answer-text').textContent = card.es;
-  document.getElementById('card-counter').textContent =
+  document.getElementById('card-counter').textContent     =
     `Tarjeta ${index + 1} de ${deck.length}`;
 
-  setTimeout(() => document.getElementById('answer-input').focus(), 100);
+  setTimeout(() => input.focus(), 100);
   answered = false;
   updateLevelBadge();
 }
@@ -772,11 +758,11 @@ function checkAnswer() {
     return;
   }
 
-  const normalize = (str) =>
+  const normalize = str =>
     str.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
   const acceptedAnswers = correct.split('/').map(a => normalize(a.trim()));
-  const isCorrect = acceptedAnswers.includes(normalize(userAns));
+  const isCorrect       = acceptedAnswers.includes(normalize(userAns));
 
   const data = loadData();
   data.totalCorrect += isCorrect ? 1 : 0;
@@ -785,17 +771,16 @@ function checkAnswer() {
   if (!isCorrect) {
     const word = deck[currentIndex].en;
     data.hardWords[word] = (data.hardWords[word] || 0) + 1;
-  } else {
-    // Acumular para subir de nivel
-    if (data.currentLevel < MAX_LEVEL) {
-      data.levelCorrect = (data.levelCorrect || 0) + 1;
-      if (data.levelCorrect >= CORRECT_TO_LEVEL_UP) {
-        data.currentLevel++;
-        data.levelCorrect = 0;
-        saveData(data);
-        showLevelUpCelebration(data.currentLevel);
-        deck = buildDeck();    // reconstruir con nuevo nivel
-      }
+  } else if (data.currentLevel < MAX_LEVEL) {
+    data.levelCorrect = (data.levelCorrect || 0) + 1;
+    if (data.levelCorrect >= CORRECT_TO_LEVEL_UP) {
+      data.currentLevel++;
+      data.levelCorrect = 0;
+      saveData(data);
+      showLevelUpCelebration(data.currentLevel);
+      // Reconstruir mazo con el nuevo nivel desbloqueado
+      deck         = buildDeck();
+      currentIndex = 0;
     }
   }
   saveData(data);
@@ -827,41 +812,33 @@ function checkAnswer() {
   answered = true;
   document.getElementById('btn-next').classList.remove('hidden');
   updateLevelBadge();
-
-  // ── Auto-avance: espera 3 s y pasa a la siguiente tarjeta ──
   startAutoNext();
 }
 
-// ─────────────────────────────────────────────
+// =============================================
 //  AUTO-AVANCE CON CUENTA REGRESIVA
-// ─────────────────────────────────────────────
+// =============================================
 function startAutoNext() {
-  const countdownEl = document.getElementById('auto-next-countdown');
-  let remaining = 3;
+  const countdown = document.getElementById('auto-next-countdown');
+  let remaining   = 3;
 
-  function updateDisplay() {
-    if (countdownEl) {
-      countdownEl.textContent = `Siguiente en ${remaining}…`;
-      countdownEl.classList.remove('hidden');
+  function tick() {
+    if (countdown) {
+      countdown.textContent = `Siguiente en ${remaining}…`;
+      countdown.classList.remove('hidden');
     }
   }
+  tick();
 
-  updateDisplay();
-
-  // Tick cada segundo para actualizar el texto
-  const tickInterval = setInterval(() => {
+  const interval = setInterval(() => {
     remaining--;
-    if (remaining > 0) {
-      updateDisplay();
-    } else {
-      clearInterval(tickInterval);
-    }
+    if (remaining > 0) tick();
+    else clearInterval(interval);
   }, 1000);
 
   autoNextTimer = setTimeout(() => {
-    clearInterval(tickInterval);
+    clearInterval(interval);
     autoNextTimer = null;
-    // Solo avanzar si el usuario no lo hizo manualmente ya
     if (answered) nextCard();
   }, 3000);
 }
@@ -870,20 +847,21 @@ function startAutoNext() {
 //  SIGUIENTE TARJETA
 // =============================================
 function nextCard() {
-  // Cancelar el auto-avance si el usuario hizo clic manualmente
   if (autoNextTimer !== null) {
     clearTimeout(autoNextTimer);
     autoNextTimer = null;
   }
-  const countdownEl = document.getElementById('auto-next-countdown');
-  if (countdownEl) countdownEl.classList.add('hidden');
+  const countdown = document.getElementById('auto-next-countdown');
+  if (countdown) countdown.classList.add('hidden');
 
   currentIndex++;
+
   if (currentIndex >= deck.length) {
-    deck = buildDeck();
+    // Completó toda la baraja → reconstruir sin repetir orden anterior
+    deck         = buildDeck();
     currentIndex = 0;
-    document.getElementById('feedback').textContent = '¡Completaste el mazo! Empezando de nuevo...';
-    document.getElementById('feedback').className = 'feedback correct';
+    document.getElementById('feedback').textContent = '¡Completaste el mazo! Empezando de nuevo…';
+    document.getElementById('feedback').className   = 'feedback correct';
     setTimeout(() => showCard(currentIndex), 1200);
     return;
   }
@@ -898,29 +876,24 @@ function showLevelUpCelebration(newLevel) {
   const container = document.getElementById('celebration-container');
   if (!container) return;
 
-  // Mensaje central
   const msg = document.createElement('div');
   msg.className = 'level-up-msg';
+  // newLevel y levelName son datos internos controlados, no de usuario
   msg.innerHTML = `🏆 ¡Nivel ${newLevel}!<br><span>${levelName}</span>`;
   container.appendChild(msg);
 
-  // Emojis que caen
   const emojis = ['🎉','⭐','🌟','✨','🎊','🥳','💫','🔥','👏','🚀','🎯','💪'];
   for (let i = 0; i < 30; i++) {
     const el = document.createElement('div');
     el.className = 'emoji-particle';
     el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    el.style.left = Math.random() * 100 + 'vw';
+    el.style.left            = Math.random() * 100 + 'vw';
     el.style.animationDuration = (1.2 + Math.random() * 2) + 's';
     el.style.animationDelay    = (Math.random() * 0.8) + 's';
-    el.style.fontSize           = (1.2 + Math.random() * 1.6) + 'rem';
+    el.style.fontSize          = (1.2 + Math.random() * 1.6) + 'rem';
     container.appendChild(el);
   }
-
-  // Limpiar después de 3.5s
-  setTimeout(() => {
-    container.innerHTML = '';
-  }, 3500);
+  setTimeout(() => { container.innerHTML = ''; }, 3500);
 }
 
 // =============================================
@@ -936,26 +909,20 @@ function renderProgress() {
   document.getElementById('total-wrong').textContent    = data.totalWrong;
   document.getElementById('accuracy-pct').textContent   = pct + '%';
 
-  // Nivel actual
   const levelEl = document.getElementById('current-level-display');
-  if (levelEl) {
-    levelEl.textContent = `Nivel ${data.currentLevel} — ${LEVEL_NAMES[data.currentLevel]}`;
-  }
+  if (levelEl) levelEl.textContent = `Nivel ${data.currentLevel} — ${LEVEL_NAMES[data.currentLevel]}`;
 
   setTimeout(() => {
     document.getElementById('accuracy-bar-fill').style.width = pct + '%';
   }, 100);
 
   const hardList  = document.getElementById('hard-words-list');
-  const hardWords = Object.entries(data.hardWords)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 8);
+  const hardWords = Object.entries(data.hardWords).sort((a, b) => b[1] - a[1]).slice(0, 8);
 
   if (hardWords.length === 0) {
     hardList.innerHTML = '<p class="empty-msg">Aún no hay datos suficientes.</p>';
     return;
   }
-
   hardList.innerHTML = hardWords.map(([word, count]) => `
     <div class="hard-word-item">
       <span class="hard-word-text">${escapeHTML(word)}</span>
@@ -971,40 +938,33 @@ function resetProgress() {
   if (!confirm('¿Seguro que quieres borrar todo tu progreso? Esta acción no se puede deshacer.')) return;
 
   const data = loadData();
-  data.totalCorrect  = 0;
-  data.totalWrong    = 0;
-  data.hardWords     = {};
-  data.currentLevel  = 1;
-  data.levelCorrect  = 0;
+  data.totalCorrect = 0;
+  data.totalWrong   = 0;
+  data.hardWords    = {};
+  data.currentLevel = 1;
+  data.levelCorrect = 0;
   saveData(data);
 
-  // Reiniciar contadores de sesión y tarjetas
   sessionCorrect = 0;
   sessionWrong   = 0;
   document.getElementById('session-correct').textContent = '0';
   document.getElementById('session-wrong').textContent   = '0';
 
-  // Reiniciar mazo y tarjeta actual
   deck         = buildDeck();
   currentIndex = 0;
   answered     = false;
   showCard(currentIndex);
   updateLevelBadge();
-
   renderProgress();
 }
 
 // =============================================
-//  SECCIÓN: MIS TARJETAS — BÚSQUEDA CON API
+//  MIS TARJETAS — BÚSQUEDA CON API
 // =============================================
 async function searchAndPreview(event) {
   event.preventDefault();
 
-  const esInput = document.getElementById('input-spanish');
-  const esRaw   = esInput.value;
-
-  // Sanitizar y validar la entrada antes de hacer cualquier cosa
-  const esWord = sanitizeWord(esRaw);
+  const esWord = sanitizeWord(document.getElementById('input-spanish').value);
   if (!esWord) return;
 
   // Rechazar entradas que parezcan código o URLs
@@ -1018,46 +978,32 @@ async function searchAndPreview(event) {
   btn.textContent = 'Buscando...';
 
   try {
-    // AbortController para cancelar si supera el timeout
     const controller = new AbortController();
     const timeoutId  = setTimeout(() => controller.abort(), SECURITY.API_TIMEOUT_MS);
 
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(esWord)}&langpair=es|en`;
-    const res = await fetch(url, {
-      method:  'GET',
-      signal:  controller.signal,
-      headers: { 'Accept': 'application/json' },
-      // No se envían cookies ni credenciales a la API externa
-      credentials: 'omit',
-      mode:        'cors',
-    });
+    const res = await fetch(
+      `https://api.mymemory.translated.net/get?q=${encodeURIComponent(esWord)}&langpair=es|en`,
+      { method: 'GET', signal: controller.signal,
+        headers: { 'Accept': 'application/json' },
+        credentials: 'omit', mode: 'cors' }
+    );
     clearTimeout(timeoutId);
 
-    // Validar que la respuesta sea JSON y tenga el status HTTP correcto
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const contentType = res.headers.get('content-type') || '';
-    if (!contentType.includes('application/json')) throw new Error('Respuesta no JSON');
+    const ct = res.headers.get('content-type') || '';
+    if (!ct.includes('application/json')) throw new Error('No JSON');
 
     const json = await res.json();
-
-    // Validar estructura esperada de la respuesta
-    if (
-      typeof json !== 'object' || json === null ||
-      json.responseStatus !== 200 ||
-      typeof json.responseData?.translatedText !== 'string'
-    ) {
-      throw new Error('Estructura de respuesta inválida');
+    if (typeof json !== 'object' || json === null ||
+        json.responseStatus !== 200 ||
+        typeof json.responseData?.translatedText !== 'string') {
+      throw new Error('Respuesta inválida');
     }
 
-    // Sanitizar la traducción recibida antes de mostrarla
-    const enRaw  = json.responseData.translatedText;
-    const enWord = sanitizeWord(enRaw);
-
+    const enWord = sanitizeWord(json.responseData.translatedText);
     if (!enWord) throw new Error('Traducción vacía');
-
     showAddModal(esWord, enWord);
-  } catch (err) {
-    // Cualquier fallo de red, timeout o validación → modo manual
+  } catch {
     showAddModal(esWord, '', true);
   } finally {
     btn.disabled    = false;
@@ -1066,26 +1012,18 @@ async function searchAndPreview(event) {
 }
 
 // =============================================
-//  MODAL DE CONFIRMACIÓN
+//  MODAL
 // =============================================
 function showAddModal(es, en, isError = false) {
-  const overlay = document.getElementById('modal-overlay');
+  const note = document.getElementById('modal-note');
+  document.getElementById('modal-es').textContent = es;
+  document.getElementById('modal-en').value       = en;
+  note.textContent = isError
+    ? 'No se encontró traducción automática. Escribe la traducción manualmente:'
+    : 'Traducción encontrada. Puedes editarla antes de guardar:';
+  note.style.color = isError ? 'var(--red)' : 'var(--text-soft)';
+  document.getElementById('modal-overlay').classList.add('active');
   const enField = document.getElementById('modal-en');
-  const esField = document.getElementById('modal-es');
-  const note    = document.getElementById('modal-note');
-
-  esField.textContent = es;
-  enField.value       = en;
-
-  if (isError) {
-    note.textContent  = 'No se encontró traducción automática. Escribe la traducción manualmente:';
-    note.style.color  = 'var(--red)';
-  } else {
-    note.textContent  = 'Traducción encontrada. Puedes editarla antes de guardar:';
-    note.style.color  = 'var(--text-soft)';
-  }
-
-  overlay.classList.add('active');
   enField.focus();
   enField.select();
 }
@@ -1095,45 +1033,34 @@ function closeModal() {
 }
 
 function confirmAddCard() {
-  // Sanitizar ambos campos antes de guardar
   const es = sanitizeWord(document.getElementById('modal-es').textContent);
   const en = sanitizeWord(document.getElementById('modal-en').value);
 
-  if (!en || !es) {
-    alert('Completa ambos campos antes de guardar.');
-    return;
-  }
+  if (!en || !es) { alert('Completa ambos campos antes de guardar.'); return; }
 
   const data = loadData();
-
-  // Respetar el límite de tarjetas personalizadas
   if (data.customCards.length >= SECURITY.MAX_CUSTOM_CARDS) {
     alert(`Has alcanzado el límite de ${SECURITY.MAX_CUSTOM_CARDS} tarjetas personalizadas.`);
-    closeModal();
-    return;
+    closeModal(); return;
   }
 
   const allCards = [...Object.values(WORDS_BY_LEVEL).flat(), ...data.customCards];
-  const esNorm   = es.toLowerCase();
-  const exists   = allCards.some(c => c.es.toLowerCase() === esNorm || c.en.toLowerCase() === en.toLowerCase());
-
-  if (exists) {
+  if (allCards.some(c => c.es.toLowerCase() === es.toLowerCase() ||
+                         c.en.toLowerCase() === en.toLowerCase())) {
     alert(`La palabra "${es}" ya existe en el mazo.`);
-    closeModal();
-    return;
+    closeModal(); return;
   }
 
   data.customCards.push({ en, es });
   saveData(data);
   deck = buildDeck();
-
   document.getElementById('input-spanish').value = '';
   closeModal();
   renderCustomCards();
 }
 
 // =============================================
-//  TARJETAS PERSONALIZADAS: RENDERIZAR LISTA
+//  MIS TARJETAS — RENDERIZAR Y ELIMINAR
 // =============================================
 function renderCustomCards() {
   const data      = loadData();
@@ -1143,7 +1070,7 @@ function renderCustomCards() {
     container.innerHTML = '<p class="empty-msg">Aún no has agregado tarjetas personalizadas.</p>';
     return;
   }
-
+  // Event delegation: no ponemos onclick inline en cada botón
   container.innerHTML = data.customCards.map((card, index) => `
     <div class="custom-card-item">
       <div class="custom-card-words">
@@ -1151,14 +1078,11 @@ function renderCustomCards() {
         <span class="custom-card-sep">→</span>
         <span class="custom-card-en">${escapeHTML(card.en)}</span>
       </div>
-      <button class="btn-delete" onclick="deleteCard(${Number(index)})" title="Eliminar tarjeta">✕</button>
+      <button class="btn-delete" data-index="${Number(index)}" title="Eliminar tarjeta">✕</button>
     </div>
   `).join('');
 }
 
-// =============================================
-//  TARJETAS PERSONALIZADAS: ELIMINAR
-// =============================================
 function deleteCard(index) {
   const data = loadData();
   data.customCards.splice(index, 1);
@@ -1168,37 +1092,57 @@ function deleteCard(index) {
 }
 
 // =============================================
-//  TECLA ENTER
+//  INICIALIZACIÓN Y EVENT LISTENERS
+//  (todos aquí — sin onclick inline en el HTML)
 // =============================================
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('answer-input').addEventListener('keydown', (e) => {
+
+  // ── Navegación ──────────────────────────────
+  document.querySelectorAll('.nav-btn[data-section]').forEach(btn => {
+    btn.addEventListener('click', () => showSection(btn.dataset.section));
+  });
+
+  // ── Estudiar: verificar / siguiente ─────────
+  document.getElementById('btn-check').addEventListener('click', checkAnswer);
+  document.getElementById('btn-next').addEventListener('click', nextCard);
+
+  // Enter en el input de respuesta
+  document.getElementById('answer-input').addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
-    if (!answered) {
-      checkAnswer();
-    } else {
-      nextCard();
-    }
+    if (!answered) checkAnswer(); else nextCard();
   });
 
-  // Cerrar modal con Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+  // ── Progreso: reset ──────────────────────────
+  document.getElementById('btn-reset').addEventListener('click', resetProgress);
+
+  // ── Mis Tarjetas: formulario de búsqueda ────
+  document.getElementById('search-form').addEventListener('submit', searchAndPreview);
+
+  // Event delegation para los botones "Eliminar" de tarjetas personalizadas
+  document.getElementById('custom-cards-list').addEventListener('click', e => {
+    const btn = e.target.closest('.btn-delete');
+    if (!btn) return;
+    const index = parseInt(btn.dataset.index, 10);
+    if (!Number.isNaN(index)) deleteCard(index);
   });
 
-  // Cerrar modal al hacer clic fuera
-  document.getElementById('modal-overlay').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('modal-overlay')) closeModal();
-  });
+  // ── Modal ────────────────────────────────────
+  document.getElementById('btn-modal-close').addEventListener('click',   closeModal);
+  document.getElementById('btn-modal-cancel').addEventListener('click',  closeModal);
+  document.getElementById('btn-modal-confirm').addEventListener('click', confirmAddCard);
 
-  // Enter en el campo de inglés del modal confirma
-  document.getElementById('modal-en').addEventListener('keydown', (e) => {
+  document.getElementById('modal-en').addEventListener('keydown', e => {
     if (e.key === 'Enter') confirmAddCard();
   });
-});
 
-// =============================================
-//  INICIALIZACIÓN
-// =============================================
-deck = buildDeck();
-showCard(currentIndex);
-updateLevelBadge();
+  // Cerrar modal con Escape o clic en el fondo
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target.id === 'modal-overlay') closeModal();
+  });
+
+  // ── Arranque ─────────────────────────────────
+  deck = buildDeck();
+  showCard(currentIndex);
+  updateLevelBadge();
+});
