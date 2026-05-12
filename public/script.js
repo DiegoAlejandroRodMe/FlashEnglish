@@ -1197,4 +1197,50 @@ function deleteCard(index) {
   renderCustomCards();
 }
 
-// ========
+// =============================================
+//  INICIALIZACIÓN Y EVENT LISTENERS
+// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Navegación
+  document.querySelectorAll('.nav-btn[data-section]').forEach(btn => {
+    btn.addEventListener('click', () => showSection(btn.dataset.section));
+  });
+
+  // Estudiar
+  document.getElementById('btn-check').addEventListener('click', checkAnswer);
+  document.getElementById('btn-next').addEventListener('click', nextCard);
+  document.getElementById('answer-input').addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    if (!answered) checkAnswer(); else nextCard();
+  });
+
+  // Progreso
+  document.getElementById('btn-reset').addEventListener('click', resetProgress);
+
+  // Mis Tarjetas
+  document.getElementById('search-form').addEventListener('submit', searchAndPreview);
+  document.getElementById('custom-cards-list').addEventListener('click', e => {
+    const btn = e.target.closest('.btn-delete');
+    if (!btn) return;
+    const idx = parseInt(btn.dataset.index, 10);
+    if (!Number.isNaN(idx)) deleteCard(idx);
+  });
+
+  // Modal
+  document.getElementById('btn-modal-close').addEventListener('click',   closeModal);
+  document.getElementById('btn-modal-cancel').addEventListener('click',  closeModal);
+  document.getElementById('btn-modal-confirm').addEventListener('click', confirmAddCard);
+  document.getElementById('modal-en').addEventListener('keydown', e => {
+    if (e.key === 'Enter') confirmAddCard();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target.id === 'modal-overlay') closeModal();
+  });
+
+  // Arranque
+  deck = buildDeck();
+  showCard(currentIndex);
+  updateLevelBadge();
+});
