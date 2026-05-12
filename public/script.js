@@ -746,9 +746,9 @@ function showCard(index) {
   const flashcard = document.getElementById('flashcard');
   const front     = flashcard.querySelector('.card-front');
   const input     = document.getElementById('answer-input');
-  const countdown = document.getElementById('auto-next-countdown');
   const btnNext   = document.getElementById('btn-next');
   const labelEl   = front.querySelector('.card-label');
+  const backCd    = document.getElementById('card-back-countdown');
 
   flashcard.classList.remove('flipped');
   front.classList.remove('correct-state', 'wrong-state');
@@ -758,7 +758,7 @@ function showCard(index) {
   document.getElementById('feedback').textContent = '';
   document.getElementById('feedback').className   = 'feedback';
   btnNext.classList.add('hidden');
-  if (countdown) countdown.classList.add('hidden');
+  if (backCd) backCd.classList.add('hidden');
   document.getElementById('answer-area').style.display = 'flex';
 
   flashcard.classList.remove('new-card');
@@ -968,12 +968,12 @@ function checkAnswer() {
 //  AUTO-AVANCE CON CUENTA REGRESIVA
 // =============================================
 function startAutoNext() {
-  const countdown = document.getElementById('auto-next-countdown');
-  let remaining   = 5;
+  const countdown = document.getElementById('card-back-countdown');
+  let remaining   = 8;
 
   function tick() {
     if (countdown) {
-      countdown.textContent = `Siguiente en ${remaining}…`;
+      countdown.textContent = remaining;
       countdown.classList.remove('hidden');
     }
   }
@@ -987,8 +987,9 @@ function startAutoNext() {
   autoNextTimer = setTimeout(() => {
     clearInterval(interval);
     autoNextTimer = null;
+    if (countdown) countdown.classList.add('hidden');
     if (answered) nextCard();
-  }, 5000);
+  }, 8000);
 }
 
 // =============================================
@@ -996,7 +997,7 @@ function startAutoNext() {
 // =============================================
 function nextCard() {
   if (autoNextTimer !== null) { clearTimeout(autoNextTimer); autoNextTimer = null; }
-  const countdown = document.getElementById('auto-next-countdown');
+  const countdown = document.getElementById('card-back-countdown');
   if (countdown) countdown.classList.add('hidden');
 
   currentIndex++;

@@ -302,7 +302,7 @@ body {
 
 /* ---- card-back new layout ---- */
 .card-back-sentence {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 500;
   color: var(--text);
   text-align: center;
@@ -339,7 +339,7 @@ body {
 .keyword-es {
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--cyan-dark, #00a8a8);
+  color: var(--cyan-dark);
 }
 
 .keyword-sep {
@@ -348,13 +348,25 @@ body {
 }
 
 .card-back-translation {
-  font-size: 0.85rem;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--text-soft);
   text-align: center;
-  font-style: italic;
   max-width: 90%;
   line-height: 1.4;
   margin-top: 2px;
+}
+
+.card-back-countdown {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+
+.card-back-countdown.hidden {
+  display: none;
 }
 
 /* legacy — keep for safety */
@@ -1007,13 +1019,4 @@ body {
   background: none;
   border: 2px solid var(--red);
   border-radius: 8px;
-  color: var(--red);
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition);
-}
-
-.btn-reset:hover {
-  background: var(--red);
-  color: var(--white
+  color: v
