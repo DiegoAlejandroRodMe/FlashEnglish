@@ -3,20 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!--
-    Content Security Policy:
-    - default-src 'self'           → solo recursos del mismo origen
-    - script-src  'self'           → solo script.js local, sin inline scripts
-    - style-src   'self'           → solo style.css local, sin inline styles
-    - connect-src 'self' https://api.mymemory.translated.net
-                                   → solo la API de traducción externa permitida
-    - img-src     'self' data:     → imágenes locales o data-URI
-    - object-src  'none'           → bloquea Flash, Java plugins, etc.
-    - base-uri    'self'           → previene ataques de base-tag hijacking
-    - form-action 'self'           → los formularios solo envían al mismo origen
-    - frame-ancestors 'none'       → previene clickjacking (equivalente a X-Frame-Options: DENY)
-  -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  script-src 'self';
@@ -27,22 +13,13 @@
                  base-uri 'self';
                  form-action 'self';
                  frame-ancestors 'none';" />
-
-  <!-- Previene que el navegador infiera un tipo MIME incorrecto (MIME sniffing) -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-
-  <!-- Controla qué información de referrer se comparte con la API externa -->
   <meta name="referrer" content="no-referrer" />
-
   <title>FlashEnglish</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- CONTENEDOR DE CELEBRACIÓN (emojis de nivel) -->
   <div id="celebration-container" class="celebration-container"></div>
-
-  <!-- ENCABEZADO -->
   <header class="header">
     <div class="header-inner">
       <h1 class="logo">Flash<span>English</span></h1>
@@ -53,14 +30,9 @@
       </nav>
     </div>
   </header>
-
   <main class="main">
-
-    <!-- SECCIÓN: ESTUDIAR -->
     <section id="section-study" class="section active">
       <div class="study-area">
-
-        <!-- Badge de nivel -->
         <div class="level-strip">
           <span id="level-badge" class="level-badge">Nivel 1 · Principiante</span>
           <div class="level-bar-track">
@@ -68,8 +40,6 @@
           </div>
           <span id="level-correct-count" class="level-counter">0/10 para subir de nivel</span>
         </div>
-
-        <!-- Tarjeta principal -->
         <div class="card-wrapper">
           <div class="card" id="flashcard">
             <div class="card-front">
@@ -85,29 +55,18 @@
             </div>
           </div>
         </div>
-
         <p class="card-counter" id="card-counter">Tarjeta 1 de 1</p>
-
         <div class="answer-area" id="answer-area">
-          <input
-            type="text"
-            id="answer-input"
-            class="answer-input"
+          <input type="text" id="answer-input" class="answer-input"
             placeholder="Escribe la traducción en español..."
-            autocomplete="off"
-            autocorrect="off"
-            spellcheck="false"
-          />
+            autocomplete="off" autocorrect="off" spellcheck="false" />
           <button class="btn-check" id="btn-check">Verificar</button>
         </div>
-
         <div class="feedback" id="feedback"></div>
-
         <div class="next-area">
           <button class="btn-next hidden" id="btn-next">Siguiente tarjeta →</button>
           <span class="auto-next-countdown hidden" id="auto-next-countdown"></span>
         </div>
-
         <div class="session-stats">
           <div class="stat-pill">
             <span class="stat-icon correct-icon">✓</span>
@@ -118,47 +77,32 @@
             <span id="session-wrong">0</span> incorrectas
           </div>
         </div>
-
       </div>
     </section>
-
-    <!-- SECCIÓN: MIS TARJETAS -->
     <section id="section-cards" class="section">
       <div class="cards-area">
         <h2 class="section-title">Mis Tarjetas</h2>
         <p class="section-subtitle">Escribe una palabra en español y buscamos su traducción al inglés automáticamente.</p>
-
         <form class="add-card-form" id="search-form">
           <div class="search-row">
             <div class="form-group">
               <label for="input-spanish">Palabra en español</label>
-              <input
-                type="text"
-                id="input-spanish"
+              <input type="text" id="input-spanish"
                 placeholder="Ej: mariposa, esperanza, correr..."
-                required
-                autocomplete="off"
-              />
+                required autocomplete="off" />
             </div>
-            <button type="submit" class="btn-search" id="btn-search">
-              Buscar traducción
-            </button>
+            <button type="submit" class="btn-search" id="btn-search">Buscar traducción</button>
           </div>
         </form>
-
         <div class="custom-cards-list" id="custom-cards-list"></div>
       </div>
     </section>
-
-    <!-- SECCIÓN: PROGRESO -->
     <section id="section-progress" class="section">
       <div class="progress-area">
         <h2 class="section-title">Tu Progreso</h2>
-
         <div class="current-level-card">
           <span id="current-level-display">Nivel 1 — Principiante</span>
         </div>
-
         <div class="progress-grid">
           <div class="progress-card">
             <span class="progress-number" id="total-answered">0</span>
@@ -177,34 +121,27 @@
             <span class="progress-label">Precisión</span>
           </div>
         </div>
-
         <div class="accuracy-bar-wrapper">
           <div class="accuracy-bar-label">Precisión general</div>
           <div class="accuracy-bar-track">
             <div class="accuracy-bar-fill" id="accuracy-bar-fill"></div>
           </div>
         </div>
-
         <div class="hard-words-section">
           <h3 class="hard-words-title">Palabras que más te cuestan</h3>
           <div id="hard-words-list" class="hard-words-list">
             <p class="empty-msg">Aún no hay datos suficientes.</p>
           </div>
         </div>
-
         <button class="btn-reset" id="btn-reset">Reiniciar progreso</button>
       </div>
     </section>
-
   </main>
-
-  <!-- MODAL DE CONFIRMACIÓN -->
   <div id="modal-overlay" class="modal-overlay">
     <div class="modal">
       <button class="modal-close" id="btn-modal-close" title="Cerrar">✕</button>
       <h3 class="modal-title">Agregar tarjeta</h3>
       <p id="modal-note" class="modal-note">Traducción encontrada. Puedes editarla antes de guardar:</p>
-
       <div class="modal-fields">
         <div class="modal-field">
           <label>Español</label>
@@ -216,7 +153,12 @@
           <input type="text" id="modal-en" class="modal-input" autocomplete="off" />
         </div>
       </div>
-
       <div class="modal-actions">
         <button class="btn-modal-cancel" id="btn-modal-cancel">Cancelar</button>
-        <button cla
+        <button class="btn-modal-confirm" id="btn-modal-confirm">✓ Agregar al mazo</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
