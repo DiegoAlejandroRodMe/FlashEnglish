@@ -51,8 +51,8 @@ const WORDS_BY_LEVEL = {
     { en: 'We go to the library to borrow ___.', blank: 'books', answer: 'libros', hint: 'logica', es: 'Vamos a la biblioteca a pedir libros prestados.' },
     { en: 'We go to the airport to catch a ___.', blank: 'flight / plane', answer: 'vuelo / avion', hint: 'logica', es: 'Vamos al aeropuerto para tomar un vuelo.' },
     { en: 'We go to the bank to save or withdraw ___.', blank: 'money', answer: 'dinero', hint: 'logica', es: 'Vamos al banco a ahorrar o retirar dinero.' },
-    { en: 'We use a knife to cut ___.', blank: 'food', answer: 'comida', hint: 'logica', es: 'Usamos un cuchillo para cortar comida.' },
-    { en: 'We use a pen to write ___.', blank: 'words / letters', answer: 'palabras / letras', hint: 'logica', es: 'Usamos un boligrafo para escribir palabras.' },
+    { en: 'A knife is a sharp tool used in the kitchen to ___ ingredients.', blank: 'cut / chop', answer: 'cortar / picar', hint: 'logica', es: 'Un cuchillo es una herramienta afilada usada en la cocina para cortar ingredientes.' },
+    { en: 'A pen is a writing tool used to put ___ on paper.', blank: 'ink', answer: 'tinta', hint: 'logica', es: 'Un boligrafo es una herramienta de escritura que pone tinta en el papel.' },
     { en: 'We use a key to open a ___.', blank: 'door / lock', answer: 'puerta / cerradura', hint: 'logica', es: 'Usamos una llave para abrir una puerta.' },
     { en: 'We use a clock to tell the ___.', blank: 'time', answer: 'hora', hint: 'logica', es: 'Usamos un reloj para decir la hora.' },
     { en: 'We use a map to find our ___.', blank: 'way / location', answer: 'camino / ubicacion', hint: 'logica', es: 'Usamos un mapa para encontrar nuestro camino.' },
@@ -76,8 +76,8 @@ const WORDS_BY_LEVEL = {
     { en: 'A tadpole grows into a ___.', blank: 'frog', answer: 'rana', hint: 'proceso', es: 'Un renacuajo crece y se convierte en rana.' },
     { en: 'Plants need sunlight and ___ to grow.', blank: 'water', answer: 'agua', hint: 'logica', es: 'Las plantas necesitan luz solar y agua para crecer.' },
     { en: 'Humans need food, water and ___ to survive.', blank: 'air / oxygen', answer: 'aire / oxigeno', hint: 'logica', es: 'Los humanos necesitan comida, agua y aire para sobrevivir.' },
-    { en: 'You use ___ to cut paper or fabric.', blank: 'scissors', answer: 'tijeras', hint: 'logica', es: 'Usas unas tijeras para cortar papel o tela.' },
-    { en: 'You use a ___ to sweep the floor.', blank: 'broom', answer: 'escoba', hint: 'logica', es: 'Usas una escoba para barrer el suelo.' },
+    { en: 'The tool with two sharp blades joined in the middle, used to cut paper or cloth, is called ___.', blank: 'scissors', answer: 'tijeras', hint: 'definicion', es: 'La herramienta con dos hojas afiladas unidas en el medio, usada para cortar papel o tela, se llama tijeras.' },
+    { en: 'The long-handled tool with bristles that you push along the floor to clean it is called a ___.', blank: 'broom', answer: 'escoba', hint: 'definicion', es: 'La herramienta de mango largo con cerdas que empujas por el suelo para limpiar se llama escoba.' },
     { en: 'You turn on the ___ when the room is dark.', blank: 'light / lamp', answer: 'luz / lampara', hint: 'logica', es: 'Enciendes la luz cuando la habitacion esta oscura.' },
     { en: 'You look in a ___ to see your reflection.', blank: 'mirror', answer: 'espejo', hint: 'logica', es: 'Te miras en un espejo para ver tu reflejo.' },
     { en: 'You sit on a ___ at a dining table.', blank: 'chair', answer: 'silla', hint: 'logica', es: 'Te sientas en una silla en la mesa del comedor.' },
@@ -767,24 +767,74 @@ function showCard(index) {
 
   const hintEl = document.getElementById('card-hint');
 
+  // Helper: build card-back content
+  function buildCardBack(c) {
+    const sentenceEl    = document.getElementById('card-back-sentence');
+    const keywordsEl    = document.getElementById('card-back-keywords');
+    const translationEl = document.getElementById('card-back-translation');
+
+    if (isBlankCard(c)) {
+      // Show the full English sentence with blank filled in (highlighted)
+      const blanks     = c.blank.split('/').map(w => w.trim());
+      const firstBlank = blanks[0];
+      // Reconstruct the sentence with the answer word highlighted
+      const fullSentence = c.en.replace(/___/g, firstBlank);
+      sentenceEl.textContent = fullSentence;
+
+      // Keywords: EN word(s) → ES word(s) in large colored text
+      keywordsEl.innerHTML = '';
+      const enWords = c.blank.split('/').map(w => w.trim());
+      const esWords = c.answer.split('/').map(w => w.trim());
+      const maxLen  = Math.max(enWords.length, esWords.length);
+      for (let i = 0; i < maxLen; i++) {
+        if (i > 0) {
+          const sep = document.createElement('span');
+          sep.className   = 'keyword-sep';
+          sep.textContent = ' / ';
+          keywordsEl.appendChild(sep);
+        }
+        const pair = document.createElement('span');
+        pair.className = 'keyword-pair';
+        const en = document.createElement('span');
+        en.className   = 'keyword-en';
+        en.textContent = enWords[i] || enWords[0];
+        const arr = document.createElement('span');
+        arr.className   = 'keyword-arrow';
+        arr.textContent = ' → ';
+        const es = document.createElement('span');
+        es.className   = 'keyword-es';
+        es.textContent = esWords[i] || esWords[0];
+        pair.appendChild(en);
+        pair.appendChild(arr);
+        pair.appendChild(es);
+        keywordsEl.appendChild(pair);
+      }
+
+      // Spanish translation of the full sentence, smaller
+      translationEl.textContent = c.es || '';
+    } else {
+      // Full sentence mode: EN sentence on back, ES below
+      sentenceEl.textContent   = c.en;
+      keywordsEl.innerHTML     = '';
+      translationEl.textContent = c.es;
+    }
+  }
+
   if (isBlankCard(card)) {
-    // MODO FILL-IN-THE-BLANK (niveles 1-2)
-    // El usuario ve la frase con ___ y escribe la palabra EN INGLÉS que falta
+    // MODO FILL-IN-THE-BLANK (niveles 1-2 y 5)
     const sentence = buildBlankSentence(card);
     document.getElementById('card-word').textContent = sentence;
-    // El reverso muestra la traducción completa de la frase en español
-    document.getElementById('card-answer-text').textContent = card.es || card.answer;
     if (labelEl) labelEl.textContent = '¿Qué palabra en inglés completa la frase?';
     input.placeholder = 'Escribe la palabra en inglés...';
     if (hintEl) hintEl.textContent = card.hint ? `[ ${card.hint} ]` : '';
   } else {
     // MODO FRASE COMPLETA (niveles 3-5)
-    document.getElementById('card-word').textContent        = card.en;
-    document.getElementById('card-answer-text').textContent = card.es;
+    document.getElementById('card-word').textContent = card.en;
     if (labelEl) labelEl.textContent = 'Traduce al español';
     input.placeholder = 'Escribe la traducción en español...';
     if (hintEl) hintEl.textContent = card.hint ? `[ ${card.hint} ]` : '';
   }
+  buildCardBack(card);
 
   document.getElementById('card-counter').textContent =
     `Tarjeta ${index + 1} de ${deck.length}`;
@@ -1147,50 +1197,4 @@ function deleteCard(index) {
   renderCustomCards();
 }
 
-// =============================================
-//  INICIALIZACIÓN Y EVENT LISTENERS
-// =============================================
-document.addEventListener('DOMContentLoaded', () => {
-
-  // Navegación
-  document.querySelectorAll('.nav-btn[data-section]').forEach(btn => {
-    btn.addEventListener('click', () => showSection(btn.dataset.section));
-  });
-
-  // Estudiar
-  document.getElementById('btn-check').addEventListener('click', checkAnswer);
-  document.getElementById('btn-next').addEventListener('click', nextCard);
-  document.getElementById('answer-input').addEventListener('keydown', e => {
-    if (e.key !== 'Enter') return;
-    if (!answered) checkAnswer(); else nextCard();
-  });
-
-  // Progreso
-  document.getElementById('btn-reset').addEventListener('click', resetProgress);
-
-  // Mis Tarjetas
-  document.getElementById('search-form').addEventListener('submit', searchAndPreview);
-  document.getElementById('custom-cards-list').addEventListener('click', e => {
-    const btn = e.target.closest('.btn-delete');
-    if (!btn) return;
-    const idx = parseInt(btn.dataset.index, 10);
-    if (!Number.isNaN(idx)) deleteCard(idx);
-  });
-
-  // Modal
-  document.getElementById('btn-modal-close').addEventListener('click',   closeModal);
-  document.getElementById('btn-modal-cancel').addEventListener('click',  closeModal);
-  document.getElementById('btn-modal-confirm').addEventListener('click', confirmAddCard);
-  document.getElementById('modal-en').addEventListener('keydown', e => {
-    if (e.key === 'Enter') confirmAddCard();
-  });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-  document.getElementById('modal-overlay').addEventListener('click', e => {
-    if (e.target.id === 'modal-overlay') closeModal();
-  });
-
-  // Arranque
-  deck = buildDeck();
-  showCard(currentIndex);
-  updateLevelBadge();
-});
+// ========
