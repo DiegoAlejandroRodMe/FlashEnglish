@@ -1,230 +1,242 @@
 // =============================================
 //  FLASHENGLISH — MAZO DE FRASES POR NIVEL
 //
-//  Nivel 1 — Palabra en contexto mínimo (sujeto + verbo + objeto)
-//  Nivel 2 — Frases con dos palabras clave en presente simple
-//  Nivel 3 — Frases con sentido de tiempo (pasado / presente / futuro / preguntas)
-//  Nivel 4 — Estructuras complejas (condicionales, voz pasiva, reported speech)
-//  Nivel 5 — Frases sofisticadas con vocabulario avanzado y matices
+//  Nivel 1 — Fill-in-the-blank: una palabra clave a traducir
+//  Nivel 2 — Fill-in-the-blank: dos palabras clave a traducir
+//  Nivel 3 — Frase completa (sentido de tiempo)
+//  Nivel 4 — Frase completa (estructuras complejas)
+//  Nivel 5 — Frase completa (vocabulario experto)
 //
-//  Cada tarjeta: { en, es, hint }
-//    en   → frase en inglés (lo que ve el usuario)
-//    es   → traducción aceptada en español
-//    hint → etiqueta que describe la estructura
+//  Niveles 1-2:  { en, blank, answer, hint }
+//    en     → frase en inglés (se muestra con ___ en lugar de blank)
+//    blank  → la(s) palabra(s) en inglés que se ocultan
+//    answer → traducción en español de blank (lo que el usuario escribe)
+//    hint   → etiqueta de estructura
+//
+//  Niveles 3-5:  { en, es, hint }
+//    en   → frase en inglés completa
+//    es   → traducción completa en español
+//    hint → etiqueta de estructura
 // =============================================
 
 const WORDS_BY_LEVEL = {
 
   // ─────────────────────────────────────────
-  //  NIVEL 1 — Contexto mínimo (100 frases)
-  //  Estructura: sujeto + verbo + palabra clave
-  //  Una sola palabra destacada por frase
+  //  NIVEL 1 — Fill-in-the-blank (100 frases)
+  //  Se muestra la frase con ___ y el usuario
+  //  escribe en español solo la palabra que falta.
+  //  blank  = palabra en inglés que se oculta
+  //  answer = su traducción en español
   // ─────────────────────────────────────────
   1: [
-    { en: 'I eat an apple.',              es: 'Yo como una manzana.',            hint: 'presente simple' },
-    { en: 'She drinks water.',            es: 'Ella bebe agua.',                 hint: 'presente simple' },
-    { en: 'They live in a house.',        es: 'Ellos viven en una casa.',        hint: 'presente simple' },
-    { en: 'He has a dog.',                es: 'Él tiene un perro.',              hint: 'presente simple' },
-    { en: 'She loves her cat.',           es: 'Ella ama a su gato.',             hint: 'presente simple' },
-    { en: 'I read a book.',               es: 'Yo leo un libro.',                hint: 'presente simple' },
-    { en: 'He calls his friend.',         es: 'Él llama a su amigo.',            hint: 'presente simple' },
-    { en: 'We have a family.',            es: 'Nosotros tenemos una familia.',   hint: 'presente simple' },
-    { en: 'I need food.',                 es: 'Yo necesito comida.',             hint: 'presente simple' },
-    { en: 'She has no time.',             es: 'Ella no tiene tiempo.',           hint: 'presente simple' },
-    { en: 'It is a sunny day.',           es: 'Es un día soleado.',              hint: 'presente simple' },
-    { en: 'I sleep at night.',            es: 'Yo duermo de noche.',             hint: 'presente simple' },
-    { en: 'She goes to school.',          es: 'Ella va a la escuela.',           hint: 'presente simple' },
-    { en: 'He is a good teacher.',        es: 'Él es un buen maestro.',          hint: 'presente simple' },
-    { en: 'I sit on the chair.',          es: 'Yo me siento en la silla.',       hint: 'presente simple' },
-    { en: 'The food is on the table.',    es: 'La comida está en la mesa.',      hint: 'presente simple' },
-    { en: 'I open the window.',           es: 'Yo abro la ventana.',             hint: 'presente simple' },
-    { en: 'Close the door, please.',      es: 'Cierra la puerta, por favor.',    hint: 'imperativo' },
-    { en: 'I drive a car.',               es: 'Yo manejo un carro.',             hint: 'presente simple' },
-    { en: 'We take the bus.',             es: 'Nosotros tomamos el autobús.',    hint: 'presente simple' },
-    { en: 'I walk down the street.',      es: 'Yo camino por la calle.',         hint: 'presente simple' },
-    { en: 'She lives in the city.',       es: 'Ella vive en la ciudad.',         hint: 'presente simple' },
-    { en: 'He is from this country.',     es: 'Él es de este país.',             hint: 'presente simple' },
-    { en: 'What is your favorite color?', es: '¿Cuál es tu color favorito?',     hint: 'pregunta simple' },
-    { en: 'I love music.',                es: 'Yo amo la música.',               hint: 'presente simple' },
-    { en: 'She checks her phone.',        es: 'Ella revisa su teléfono.',        hint: 'presente simple' },
-    { en: 'I need money.',                es: 'Yo necesito dinero.',             hint: 'presente simple' },
-    { en: 'He goes to work.',             es: 'Él va al trabajo.',               hint: 'presente simple' },
-    { en: 'We play a game.',              es: 'Nosotros jugamos un juego.',      hint: 'presente simple' },
-    { en: 'The sun is bright today.',     es: 'El sol está brillante hoy.',      hint: 'presente simple' },
-    { en: 'I see the moon.',              es: 'Yo veo la luna.',                 hint: 'presente simple' },
-    { en: 'It starts to rain.',           es: 'Empieza a llover.',               hint: 'presente simple' },
-    { en: 'We sit under the tree.',       es: 'Nos sentamos bajo el árbol.',     hint: 'presente simple' },
-    { en: 'She picks a flower.',          es: 'Ella recoge una flor.',           hint: 'presente simple' },
-    { en: 'A bird sings outside.',        es: 'Un pájaro canta afuera.',         hint: 'presente simple' },
-    { en: 'I catch a fish.',              es: 'Yo atrapo un pez.',               hint: 'presente simple' },
-    { en: 'I eat bread for breakfast.',   es: 'Yo como pan en el desayuno.',     hint: 'presente simple' },
-    { en: 'She drinks milk.',             es: 'Ella bebe leche.',                hint: 'presente simple' },
-    { en: 'He drinks coffee.',            es: 'Él bebe café.',                   hint: 'presente simple' },
-    { en: 'She prefers tea.',             es: 'Ella prefiere el té.',            hint: 'presente simple' },
-    { en: 'He wears a shirt.',            es: 'Él usa una camisa.',              hint: 'presente simple' },
-    { en: 'I lost my shoe.',              es: 'Perdí mi zapato.',                hint: 'pasado simple' },
-    { en: 'She wears a hat.',             es: 'Ella usa un sombrero.',           hint: 'presente simple' },
-    { en: 'I hurt my eye.',               es: 'Me lastimé el ojo.',              hint: 'pasado simple' },
-    { en: 'Raise your hand.',             es: 'Levanta tu mano.',                hint: 'imperativo' },
-    { en: 'I feel it in my heart.',       es: 'Lo siento en mi corazón.',        hint: 'presente simple' },
-    { en: 'Write the word here.',         es: 'Escribe la palabra aquí.',        hint: 'imperativo' },
-    { en: 'Show me the letter.',          es: 'Muéstrame la letra.',             hint: 'imperativo' },
-    { en: 'Say the number.',              es: 'Di el número.',                   hint: 'imperativo' },
-    { en: 'I have a dream.',              es: 'Yo tengo un sueño.',              hint: 'presente simple' },
-    { en: 'I go to bed early.',           es: 'Me voy a la cama temprano.',      hint: 'presente simple' },
-    { en: 'She cleans the room.',         es: 'Ella limpia la habitación.',      hint: 'presente simple' },
-    { en: 'He cooks in the kitchen.',     es: 'Él cocina en la cocina.',         hint: 'presente simple' },
-    { en: 'I use the bathroom.',          es: 'Yo uso el baño.',                 hint: 'presente simple' },
-    { en: 'We work in the garden.',       es: 'Nosotros trabajamos en el jardín.',hint:'presente simple' },
-    { en: 'Kids play in the park.',       es: 'Los niños juegan en el parque.',  hint: 'presente simple' },
-    { en: 'I buy it at the store.',       es: 'Lo compro en la tienda.',         hint: 'presente simple' },
-    { en: 'She shops at the market.',     es: 'Ella compra en el mercado.',      hint: 'presente simple' },
-    { en: 'He goes to the bank.',         es: 'Él va al banco.',                 hint: 'presente simple' },
-    { en: 'She works at the hospital.',   es: 'Ella trabaja en el hospital.',    hint: 'presente simple' },
-    { en: 'The doctor helps the child.',  es: 'El médico ayuda al niño.',        hint: 'presente simple' },
-    { en: 'The baby cries at night.',     es: 'El bebé llora de noche.',         hint: 'presente simple' },
-    { en: 'The man reads the paper.',     es: 'El hombre lee el periódico.',     hint: 'presente simple' },
-    { en: 'The woman cooks dinner.',      es: 'La mujer cocina la cena.',        hint: 'presente simple' },
-    { en: 'The boy runs fast.',           es: 'El chico corre rápido.',          hint: 'presente simple' },
-    { en: 'The girl sings well.',         es: 'La chica canta bien.',            hint: 'presente simple' },
-    { en: 'My mother is kind.',           es: 'Mi madre es amable.',             hint: 'presente simple' },
-    { en: 'His father works hard.',       es: 'Su padre trabaja duro.',          hint: 'presente simple' },
-    { en: 'My brother is tall.',          es: 'Mi hermano es alto.',             hint: 'presente simple' },
-    { en: 'Her sister is smart.',         es: 'Su hermana es inteligente.',      hint: 'presente simple' },
-    { en: 'What is your name?',           es: '¿Cuál es tu nombre?',             hint: 'pregunta simple' },
-    { en: 'This year is busy.',           es: 'Este año está ocupado.',          hint: 'presente simple' },
-    { en: 'The week starts Monday.',      es: 'La semana empieza el lunes.',     hint: 'presente simple' },
-    { en: 'This month is cold.',          es: 'Este mes hace frío.',             hint: 'presente simple' },
-    { en: 'It is one hour late.',         es: 'Es una hora tarde.',              hint: 'presente simple' },
-    { en: 'Wait one minute.',             es: 'Espera un minuto.',               hint: 'imperativo' },
-    { en: 'Wake up in the morning.',      es: 'Despierta en la mañana.',         hint: 'imperativo' },
-    { en: 'Rest in the afternoon.',       es: 'Descansa en la tarde.',           hint: 'imperativo' },
-    { en: 'It is evening now.',           es: 'Ya es de noche.',                 hint: 'presente simple' },
-    { en: 'Do it today.',                 es: 'Hazlo hoy.',                      hint: 'imperativo' },
-    { en: 'Come back tomorrow.',          es: 'Regresa mañana.',                 hint: 'imperativo' },
-    { en: 'It happened yesterday.',       es: 'Sucedió ayer.',                   hint: 'pasado simple' },
-    { en: 'It is very hot.',              es: 'Hace mucho calor.',               hint: 'presente simple' },
-    { en: 'The water is cold.',           es: 'El agua está fría.',              hint: 'presente simple' },
-    { en: 'He is a big man.',             es: 'Él es un hombre grande.',         hint: 'presente simple' },
-    { en: 'It is a small house.',         es: 'Es una casa pequeña.',            hint: 'presente simple' },
-    { en: 'She is a good person.',        es: 'Ella es una buena persona.',      hint: 'presente simple' },
-    { en: 'This is bad news.',            es: 'Esta es una mala noticia.',       hint: 'presente simple' },
-    { en: 'I buy a new phone.',           es: 'Compro un teléfono nuevo.',       hint: 'presente simple' },
-    { en: 'The old man smiles.',          es: 'El hombre viejo sonríe.',         hint: 'presente simple' },
-    { en: 'She is very happy.',           es: 'Ella está muy feliz.',            hint: 'presente simple' },
-    { en: 'He looks sad today.',          es: 'Él parece triste hoy.',           hint: 'presente simple' },
-    { en: 'Drive fast, we are late.',     es: 'Maneja rápido, llegamos tarde.',  hint: 'imperativo' },
-    { en: 'Walk slowly, please.',         es: 'Camina despacio, por favor.',     hint: 'imperativo' },
-    { en: 'The shop is open now.',        es: 'La tienda está abierta ahora.',   hint: 'presente simple' },
-    { en: 'The bank is closed today.',    es: 'El banco está cerrado hoy.',      hint: 'presente simple' },
-    { en: 'Say yes or no.',              es: 'Di sí o no.',                     hint: 'imperativo' },
-    { en: 'She always says yes.',         es: 'Ella siempre dice que sí.',       hint: 'presente simple' },
+    { en: 'I eat an apple.',              blank: 'apple',     answer: 'manzana',     hint: 'sustantivo' },
+    { en: 'She drinks water.',            blank: 'water',     answer: 'agua',        hint: 'sustantivo' },
+    { en: 'They live in a house.',        blank: 'house',     answer: 'casa',        hint: 'sustantivo' },
+    { en: 'He has a dog.',                blank: 'dog',       answer: 'perro',       hint: 'sustantivo' },
+    { en: 'She loves her cat.',           blank: 'cat',       answer: 'gato',        hint: 'sustantivo' },
+    { en: 'I read a book.',               blank: 'book',      answer: 'libro',       hint: 'sustantivo' },
+    { en: 'He calls his friend.',         blank: 'friend',    answer: 'amigo',       hint: 'sustantivo' },
+    { en: 'We have a family.',            blank: 'family',    answer: 'familia',     hint: 'sustantivo' },
+    { en: 'I need food.',                 blank: 'food',      answer: 'comida',      hint: 'sustantivo' },
+    { en: 'She has no time.',             blank: 'time',      answer: 'tiempo',      hint: 'sustantivo' },
+    { en: 'It is a sunny day.',           blank: 'day',       answer: 'día',         hint: 'sustantivo' },
+    { en: 'I sleep at night.',            blank: 'night',     answer: 'noche',       hint: 'sustantivo' },
+    { en: 'She goes to school.',          blank: 'school',    answer: 'escuela',     hint: 'sustantivo' },
+    { en: 'He is a good teacher.',        blank: 'teacher',   answer: 'maestro',     hint: 'sustantivo' },
+    { en: 'I sit on the chair.',          blank: 'chair',     answer: 'silla',       hint: 'sustantivo' },
+    { en: 'The food is on the table.',    blank: 'table',     answer: 'mesa',        hint: 'sustantivo' },
+    { en: 'I open the window.',           blank: 'window',    answer: 'ventana',     hint: 'sustantivo' },
+    { en: 'Close the door, please.',      blank: 'door',      answer: 'puerta',      hint: 'sustantivo' },
+    { en: 'I drive a car.',               blank: 'car',       answer: 'carro',       hint: 'sustantivo' },
+    { en: 'We take the bus.',             blank: 'bus',       answer: 'autobús',     hint: 'sustantivo' },
+    { en: 'I walk down the street.',      blank: 'street',    answer: 'calle',       hint: 'sustantivo' },
+    { en: 'She lives in the city.',       blank: 'city',      answer: 'ciudad',      hint: 'sustantivo' },
+    { en: 'He is from this country.',     blank: 'country',   answer: 'país',        hint: 'sustantivo' },
+    { en: 'I love music.',                blank: 'music',     answer: 'música',      hint: 'sustantivo' },
+    { en: 'She checks her phone.',        blank: 'phone',     answer: 'teléfono',    hint: 'sustantivo' },
+    { en: 'I need money.',                blank: 'money',     answer: 'dinero',      hint: 'sustantivo' },
+    { en: 'He goes to work.',             blank: 'work',      answer: 'trabajo',     hint: 'sustantivo' },
+    { en: 'We play a game.',              blank: 'game',      answer: 'juego',       hint: 'sustantivo' },
+    { en: 'I see the moon.',              blank: 'moon',      answer: 'luna',        hint: 'sustantivo' },
+    { en: 'I see the sun.',               blank: 'sun',       answer: 'sol',         hint: 'sustantivo' },
+    { en: 'It starts to rain.',           blank: 'rain',      answer: 'llover / lluvia', hint: 'sustantivo/verbo' },
+    { en: 'We sit under the tree.',       blank: 'tree',      answer: 'árbol',       hint: 'sustantivo' },
+    { en: 'She picks a flower.',          blank: 'flower',    answer: 'flor',        hint: 'sustantivo' },
+    { en: 'A bird sings outside.',        blank: 'bird',      answer: 'pájaro',      hint: 'sustantivo' },
+    { en: 'I catch a fish.',              blank: 'fish',      answer: 'pez',         hint: 'sustantivo' },
+    { en: 'I eat bread for breakfast.',   blank: 'bread',     answer: 'pan',         hint: 'sustantivo' },
+    { en: 'She drinks milk.',             blank: 'milk',      answer: 'leche',       hint: 'sustantivo' },
+    { en: 'He drinks coffee.',            blank: 'coffee',    answer: 'café',        hint: 'sustantivo' },
+    { en: 'She prefers tea.',             blank: 'tea',       answer: 'té',          hint: 'sustantivo' },
+    { en: 'He wears a shirt.',            blank: 'shirt',     answer: 'camisa',      hint: 'sustantivo' },
+    { en: 'I lost my shoe.',              blank: 'shoe',      answer: 'zapato',      hint: 'sustantivo' },
+    { en: 'She wears a hat.',             blank: 'hat',       answer: 'sombrero',    hint: 'sustantivo' },
+    { en: 'I feel it in my heart.',       blank: 'heart',     answer: 'corazón',     hint: 'sustantivo' },
+    { en: 'Write the word here.',         blank: 'word',      answer: 'palabra',     hint: 'sustantivo' },
+    { en: 'Say the number.',              blank: 'number',    answer: 'número',      hint: 'sustantivo' },
+    { en: 'I have a dream.',              blank: 'dream',     answer: 'sueño',       hint: 'sustantivo' },
+    { en: 'She cleans the room.',         blank: 'room',      answer: 'habitación',  hint: 'sustantivo' },
+    { en: 'He cooks in the kitchen.',     blank: 'kitchen',   answer: 'cocina',      hint: 'sustantivo' },
+    { en: 'I use the bathroom.',          blank: 'bathroom',  answer: 'baño',        hint: 'sustantivo' },
+    { en: 'We work in the garden.',       blank: 'garden',    answer: 'jardín',      hint: 'sustantivo' },
+    { en: 'Kids play in the park.',       blank: 'park',      answer: 'parque',      hint: 'sustantivo' },
+    { en: 'I buy it at the store.',       blank: 'store',     answer: 'tienda',      hint: 'sustantivo' },
+    { en: 'She shops at the market.',     blank: 'market',    answer: 'mercado',     hint: 'sustantivo' },
+    { en: 'He goes to the bank.',         blank: 'bank',      answer: 'banco',       hint: 'sustantivo' },
+    { en: 'She works at the hospital.',   blank: 'hospital',  answer: 'hospital',    hint: 'sustantivo' },
+    { en: 'The doctor helps the child.',  blank: 'doctor',    answer: 'médico',      hint: 'sustantivo' },
+    { en: 'The baby cries at night.',     blank: 'baby',      answer: 'bebé',        hint: 'sustantivo' },
+    { en: 'The man reads the paper.',     blank: 'paper',     answer: 'periódico',   hint: 'sustantivo' },
+    { en: 'The woman cooks dinner.',      blank: 'dinner',    answer: 'cena',        hint: 'sustantivo' },
+    { en: 'The boy runs fast.',           blank: 'boy',       answer: 'chico / niño', hint: 'sustantivo' },
+    { en: 'The girl sings well.',         blank: 'girl',      answer: 'chica / niña', hint: 'sustantivo' },
+    { en: 'My mother is kind.',           blank: 'mother',    answer: 'madre',       hint: 'sustantivo' },
+    { en: 'His father works hard.',       blank: 'father',    answer: 'padre',       hint: 'sustantivo' },
+    { en: 'My brother is tall.',          blank: 'brother',   answer: 'hermano',     hint: 'sustantivo' },
+    { en: 'Her sister is smart.',         blank: 'sister',    answer: 'hermana',     hint: 'sustantivo' },
+    { en: 'This year is busy.',           blank: 'year',      answer: 'año',         hint: 'sustantivo' },
+    { en: 'The week starts Monday.',      blank: 'week',      answer: 'semana',      hint: 'sustantivo' },
+    { en: 'This month is cold.',          blank: 'month',     answer: 'mes',         hint: 'sustantivo' },
+    { en: 'Wait one minute.',             blank: 'minute',    answer: 'minuto',      hint: 'sustantivo' },
+    { en: 'It is very hot.',              blank: 'hot',       answer: 'caliente / calor', hint: 'adjetivo' },
+    { en: 'The water is cold.',           blank: 'cold',      answer: 'frío',        hint: 'adjetivo' },
+    { en: 'He is a big man.',             blank: 'big',       answer: 'grande',      hint: 'adjetivo' },
+    { en: 'It is a small house.',         blank: 'small',     answer: 'pequeño',     hint: 'adjetivo' },
+    { en: 'She is a good person.',        blank: 'good',      answer: 'buena / bueno', hint: 'adjetivo' },
+    { en: 'This is bad news.',            blank: 'bad',       answer: 'mala / malo', hint: 'adjetivo' },
+    { en: 'She is very happy.',           blank: 'happy',     answer: 'feliz',       hint: 'adjetivo' },
+    { en: 'He looks sad today.',          blank: 'sad',       answer: 'triste',      hint: 'adjetivo' },
+    { en: 'The shop is open now.',        blank: 'open',      answer: 'abierta / abierto', hint: 'adjetivo' },
+    { en: 'The bank is closed today.',    blank: 'closed',    answer: 'cerrado',     hint: 'adjetivo' },
+    { en: 'She always says yes.',         blank: 'always',    answer: 'siempre',     hint: 'adverbio' },
+    { en: 'Walk slowly, please.',         blank: 'slowly',    answer: 'despacio',    hint: 'adverbio' },
+    { en: 'The boy runs fast.',           blank: 'fast',      answer: 'rápido',      hint: 'adverbio' },
+    { en: 'I eat an apple.',              blank: 'eat',       answer: 'como / comer', hint: 'verbo' },
+    { en: 'She drinks water.',            blank: 'drinks',    answer: 'bebe / beber', hint: 'verbo' },
+    { en: 'He calls his friend.',         blank: 'calls',     answer: 'llama / llamar', hint: 'verbo' },
+    { en: 'I sleep at night.',            blank: 'sleep',     answer: 'duermo / dormir', hint: 'verbo' },
+    { en: 'She goes to school.',          blank: 'goes',      answer: 'va / ir',     hint: 'verbo' },
+    { en: 'I open the window.',           blank: 'open',      answer: 'abro / abrir', hint: 'verbo' },
+    { en: 'I drive a car.',               blank: 'drive',     answer: 'manejo / conducir', hint: 'verbo' },
+    { en: 'I walk down the street.',      blank: 'walk',      answer: 'camino / caminar', hint: 'verbo' },
+    { en: 'She picks a flower.',          blank: 'picks',     answer: 'recoge / recoger', hint: 'verbo' },
+    { en: 'I catch a fish.',              blank: 'catch',     answer: 'atrapo / atrapar', hint: 'verbo' },
+    { en: 'She cleans the room.',         blank: 'cleans',    answer: 'limpia / limpiar', hint: 'verbo' },
+    { en: 'He cooks in the kitchen.',     blank: 'cooks',     answer: 'cocina / cocinar', hint: 'verbo' },
+    { en: 'The baby cries at night.',     blank: 'cries',     answer: 'llora / llorar', hint: 'verbo' },
+    { en: 'She works at the hospital.',   blank: 'works',     answer: 'trabaja / trabajar', hint: 'verbo' },
+    { en: 'I need money.',                blank: 'need',      answer: 'necesito / necesitar', hint: 'verbo' },
+    { en: 'I have a dream.',              blank: 'have',      answer: 'tengo / tener', hint: 'verbo' },
+    { en: 'I love music.',                blank: 'love',      answer: 'amo / amar',  hint: 'verbo' },
   ],
 
   // ─────────────────────────────────────────
-  //  NIVEL 2 — Dos palabras clave por frase (100 frases)
-  //  Presente simple + vocabulario elemental
+  //  NIVEL 2 — Fill-in-the-blank, dos palabras (100 frases)
+  //  blank  = "palabra1 / palabra2" (ambas en inglés)
+  //  answer = "trad1 / trad2" (ambas en español)
+  //  El usuario escribe las dos traducciones separadas por /
   // ─────────────────────────────────────────
   2: [
-    { en: 'I booked a hotel near the airport.',         es: 'Reservé un hotel cerca del aeropuerto.',        hint: 'dos palabras clave' },
-    { en: 'She bought a ticket for the concert.',       es: 'Ella compró un boleto para el concierto.',      hint: 'dos palabras clave' },
-    { en: 'We planned a long travel.',                  es: 'Planeamos un largo viaje.',                     hint: 'dos palabras clave' },
-    { en: 'The beach is near the city.',                es: 'La playa está cerca de la ciudad.',             hint: 'dos palabras clave' },
-    { en: 'We hiked up the mountain.',                  es: 'Nosotros escalamos la montaña.',                hint: 'dos palabras clave' },
-    { en: 'The river crosses the forest.',              es: 'El río cruza el bosque.',                       hint: 'dos palabras clave' },
-    { en: 'The island has no bridge.',                  es: 'La isla no tiene puente.',                      hint: 'dos palabras clave' },
-    { en: 'She reads the map in the village.',          es: 'Ella lee el mapa en el pueblo.',                hint: 'dos palabras clave' },
-    { en: 'He studies a foreign language.',             es: 'Él estudia un idioma extranjero.',              hint: 'dos palabras clave' },
-    { en: 'Our class starts at eight.',                 es: 'Nuestra clase empieza a las ocho.',             hint: 'dos palabras clave' },
-    { en: 'She finished her homework before the exam.', es: 'Ella terminó su tarea antes del examen.',       hint: 'dos palabras clave' },
-    { en: 'He got a good grade at the university.',     es: 'Él obtuvo una buena calificación en la universidad.', hint: 'dos palabras clave' },
-    { en: 'I return books to the library.',             es: 'Yo regreso libros a la biblioteca.',            hint: 'dos palabras clave' },
-    { en: 'She works in the office downtown.',          es: 'Ella trabaja en la oficina del centro.',        hint: 'dos palabras clave' },
-    { en: 'We have a meeting at the office.',           es: 'Tenemos una reunión en la oficina.',            hint: 'dos palabras clave' },
-    { en: 'His salary covers the rent.',                es: 'Su salario cubre el alquiler.',                 hint: 'dos palabras clave' },
-    { en: 'She fixes the computer with the keyboard.',  es: 'Ella arregla la computadora con el teclado.',   hint: 'dos palabras clave' },
-    { en: 'The screen shows a new email.',              es: 'La pantalla muestra un nuevo correo electrónico.',hint:'dos palabras clave' },
-    { en: 'Change your password on the website.',       es: 'Cambia tu contraseña en el sitio web.',         hint: 'dos palabras clave' },
-    { en: 'I have no internet for my camera.',          es: 'No tengo internet para mi cámara.',             hint: 'dos palabras clave' },
-    { en: 'She posts a picture at the concert.',        es: 'Ella publica una foto en el concierto.',        hint: 'dos palabras clave' },
-    { en: 'We watch a movie on the big screen.',        es: 'Vemos una película en la pantalla grande.',     hint: 'dos palabras clave' },
-    { en: 'The song played at the concert.',            es: 'La canción sonó en el concierto.',              hint: 'dos palabras clave' },
-    { en: 'Our team won the match.',                    es: 'Nuestro equipo ganó el partido.',               hint: 'dos palabras clave' },
-    { en: 'The player scored and won the prize.',       es: 'El jugador anotó y ganó el premio.',            hint: 'dos palabras clave' },
-    { en: 'She organizes a birthday party.',            es: 'Ella organiza una fiesta de cumpleaños.',       hint: 'dos palabras clave' },
-    { en: 'I bought a gift and a cake.',                es: 'Compré un regalo y un pastel.',                 hint: 'dos palabras clave' },
-    { en: 'They had dinner at a restaurant.',           es: 'Ellos cenaron en un restaurante.',              hint: 'dos palabras clave' },
-    { en: 'We ordered from the menu.',                  es: 'Pedimos del menú.',                             hint: 'dos palabras clave' },
-    { en: 'The waiter brought the bill.',               es: 'El mesero trajo la cuenta.',                    hint: 'dos palabras clave' },
-    { en: 'The doctor gave him medicine.',              es: 'El médico le dio medicina.',                    hint: 'dos palabras clave' },
-    { en: 'She has a fever and a headache.',            es: 'Ella tiene fiebre y dolor de cabeza.',          hint: 'dos palabras clave' },
-    { en: 'I got medicine at the pharmacy.',            es: 'Conseguí medicina en la farmacia.',             hint: 'dos palabras clave' },
-    { en: 'Daily exercise improves health.',            es: 'El ejercicio diario mejora la salud.',          hint: 'dos palabras clave' },
-    { en: 'That habit is good for your health.',        es: 'Ese hábito es bueno para tu salud.',            hint: 'dos palabras clave' },
-    { en: 'Check the weather before traveling.',        es: 'Revisa el clima antes de viajar.',              hint: 'dos palabras clave' },
-    { en: 'A cloud covers the sun.',                    es: 'Una nube cubre el sol.',                        hint: 'dos palabras clave' },
-    { en: 'Strong wind brings the storm.',              es: 'El viento fuerte trae la tormenta.',            hint: 'dos palabras clave' },
-    { en: 'Snow falls every winter season.',            es: 'La nieve cae cada estación de invierno.',       hint: 'dos palabras clave' },
-    { en: 'Flowers bloom in the spring.',               es: 'Las flores florecen en primavera.',             hint: 'dos palabras clave' },
-    { en: 'We swim at the beach in summer.',            es: 'Nadamos en la playa en verano.',                hint: 'dos palabras clave' },
-    { en: 'Leaves fall in autumn.',                     es: 'Las hojas caen en otoño.',                      hint: 'dos palabras clave' },
-    { en: 'The lion hunts in the forest.',              es: 'El león caza en el bosque.',                    hint: 'dos palabras clave' },
-    { en: 'A tiger and an elephant crossed the river.', es: 'Un tigre y un elefante cruzaron el río.',       hint: 'dos palabras clave' },
-    { en: 'The monkey climbs the tree.',                es: 'El mono trepa el árbol.',                       hint: 'dos palabras clave' },
-    { en: 'The rabbit hides from the snake.',           es: 'El conejo se esconde de la serpiente.',         hint: 'dos palabras clave' },
-    { en: 'The horse and the cow are on the farm.',     es: 'El caballo y la vaca están en la granja.',      hint: 'dos palabras clave' },
-    { en: 'She wore a red shirt and blue shoes.',       es: 'Ella usó una camisa roja y zapatos azules.',    hint: 'dos palabras clave' },
-    { en: 'The black cat sat on the white chair.',      es: 'El gato negro se sentó en la silla blanca.',    hint: 'dos palabras clave' },
-    { en: 'Paint it green and orange.',                 es: 'Píntalas de verde y naranja.',                  hint: 'dos palabras clave' },
-    { en: 'Mix purple and pink for brown.',             es: 'Mezcla morado y rosa para obtener marrón.',     hint: 'dos palabras clave' },
-    { en: 'The tall man and the short woman talked.',   es: 'El hombre alto y la mujer baja hablaron.',      hint: 'dos palabras clave' },
-    { en: 'The heavy box and the light bag are here.',  es: 'La caja pesada y la bolsa ligera están aquí.',  hint: 'dos palabras clave' },
-    { en: 'Keep it clean and quiet.',                   es: 'Mantenlo limpio y tranquilo.',                  hint: 'dos palabras clave' },
-    { en: 'The dirty street was loud.',                 es: 'La calle sucia era ruidosa.',                   hint: 'dos palabras clave' },
-    { en: 'She is busy but free tonight.',              es: 'Ella está ocupada pero libre esta noche.',      hint: 'dos palabras clave' },
-    { en: 'He broke his lunch during the meeting.',     es: 'Él interrumpió su almuerzo durante la reunión.',hint: 'dos palabras clave' },
-    { en: 'We had breakfast before the exam.',          es: 'Desayunamos antes del examen.',                 hint: 'dos palabras clave' },
-    { en: 'He ordered dinner from the menu.',           es: 'Él pidió la cena del menú.',                    hint: 'dos palabras clave' },
-    { en: 'She checked the email and the password.',    es: 'Ella revisó el correo y la contraseña.',        hint: 'dos palabras clave' },
-    { en: 'The sport requires a team and a player.',    es: 'El deporte requiere un equipo y un jugador.',   hint: 'dos palabras clave' },
-    { en: 'He drives the car to the airport.',          es: 'Él conduce el carro al aeropuerto.',            hint: 'dos palabras clave' },
-    { en: 'She walks her dog in the park.',             es: 'Ella pasea a su perro en el parque.',           hint: 'dos palabras clave' },
-    { en: 'They read a book in the library.',           es: 'Ellos leyeron un libro en la biblioteca.',      hint: 'dos palabras clave' },
-    { en: 'We drank coffee and tea.',                   es: 'Bebimos café y té.',                            hint: 'dos palabras clave' },
-    { en: 'He saved money at the bank.',                es: 'Él ahorró dinero en el banco.',                 hint: 'dos palabras clave' },
-    { en: 'She found a gift and a cake.',               es: 'Ella encontró un regalo y un pastel.',          hint: 'dos palabras clave' },
-    { en: 'They crossed the bridge over the river.',    es: 'Ellos cruzaron el puente sobre el río.',        hint: 'dos palabras clave' },
-    { en: 'The bird flew over the forest.',             es: 'El pájaro voló sobre el bosque.',               hint: 'dos palabras clave' },
-    { en: 'The fish swam under the bridge.',            es: 'El pez nadó bajo el puente.',                   hint: 'dos palabras clave' },
-    { en: 'She learned the language in the village.',   es: 'Ella aprendió el idioma en el pueblo.',         hint: 'dos palabras clave' },
-    { en: 'He used the map to find the island.',        es: 'Él usó el mapa para encontrar la isla.',        hint: 'dos palabras clave' },
-    { en: 'I need water and food right now.',           es: 'Necesito agua y comida ahora mismo.',           hint: 'dos palabras clave' },
-    { en: 'She left her phone and wallet behind.',      es: 'Ella dejó su teléfono y cartera atrás.',        hint: 'dos palabras clave' },
-    { en: 'The doctor and the teacher help people.',    es: 'El médico y el maestro ayudan a las personas.', hint: 'dos palabras clave' },
-    { en: 'My brother and sister came to the party.',   es: 'Mi hermano y hermana vinieron a la fiesta.',    hint: 'dos palabras clave' },
-    { en: 'The baby and the child cried.',              es: 'El bebé y el niño lloraron.',                   hint: 'dos palabras clave' },
-    { en: 'The man and the woman shared a meal.',       es: 'El hombre y la mujer compartieron una comida.', hint: 'dos palabras clave' },
-    { en: 'The boy and the girl sang a song.',          es: 'El chico y la chica cantaron una canción.',     hint: 'dos palabras clave' },
-    { en: 'Her mother and father traveled.',            es: 'Su madre y padre viajaron.',                    hint: 'dos palabras clave' },
-    { en: 'We need a computer and internet.',           es: 'Necesitamos una computadora e internet.',       hint: 'dos palabras clave' },
-    { en: 'She bought a camera at the market.',         es: 'Ella compró una cámara en el mercado.',         hint: 'dos palabras clave' },
-    { en: 'He lost his ticket and his map.',            es: 'Él perdió su boleto y su mapa.',                hint: 'dos palabras clave' },
-    { en: 'The pig and the chicken are on the farm.',   es: 'El cerdo y el pollo están en la granja.',       hint: 'dos palabras clave' },
-    { en: 'She has a habit of morning exercise.',       es: 'Ella tiene el hábito del ejercicio matutino.',  hint: 'dos palabras clave' },
-    { en: 'They watched the sunset at the beach.',      es: 'Vieron el atardecer en la playa.',              hint: 'dos palabras clave' },
-    { en: 'He checked his email and salary.',           es: 'Él revisó su correo y su salario.',             hint: 'dos palabras clave' },
-    { en: 'The waiter and the cook work together.',     es: 'El mesero y el cocinero trabajan juntos.',      hint: 'dos palabras clave' },
-    { en: 'We hiked and then camped in the forest.',    es: 'Caminamos y luego acampamos en el bosque.',     hint: 'dos palabras clave' },
-    { en: 'She studies and works at the same time.',    es: 'Ella estudia y trabaja al mismo tiempo.',       hint: 'dos palabras clave' },
-    { en: 'He writes a report in the office.',          es: 'Él escribe un informe en la oficina.',          hint: 'dos palabras clave' },
-    { en: 'The storm hit the city and the village.',    es: 'La tormenta golpeó la ciudad y el pueblo.',     hint: 'dos palabras clave' },
-    { en: 'The snake and the rabbit crossed the road.', es: 'La serpiente y el conejo cruzaron el camino.',  hint: 'dos palabras clave' },
-    { en: 'She mixed yellow and blue for green.',       es: 'Ella mezcló amarillo y azul para obtener verde.',hint:'dos palabras clave' },
-    { en: 'He wore a hat and a brown shirt.',           es: 'Él usó un sombrero y una camisa marrón.',       hint: 'dos palabras clave' },
-    { en: 'They drank milk and coffee after dinner.',   es: 'Ellos bebieron leche y café después de la cena.',hint:'dos palabras clave' },
-    { en: 'She cleaned the kitchen and the bathroom.',  es: 'Ella limpió la cocina y el baño.',              hint: 'dos palabras clave' },
-    { en: 'The garden and the park were beautiful.',    es: 'El jardín y el parque eran hermosos.',          hint: 'dos palabras clave' },
-    { en: 'He saved the contract and the report.',      es: 'Él guardó el contrato y el informe.',           hint: 'dos palabras clave' },
+    { en: 'I booked a hotel near the airport.',         blank: 'hotel / airport',        answer: 'hotel / aeropuerto',             hint: 'viaje' },
+    { en: 'She bought a ticket for the concert.',       blank: 'ticket / concert',       answer: 'boleto / concierto',             hint: 'entretenimiento' },
+    { en: 'We planned a long travel.',                  blank: 'planned / travel',       answer: 'planeamos / viaje',              hint: 'viaje' },
+    { en: 'The beach is near the city.',                blank: 'beach / city',           answer: 'playa / ciudad',                 hint: 'lugares' },
+    { en: 'We hiked up the mountain.',                  blank: 'hiked / mountain',       answer: 'caminamos / montaña',            hint: 'naturaleza' },
+    { en: 'The river crosses the forest.',              blank: 'river / forest',         answer: 'río / bosque',                   hint: 'naturaleza' },
+    { en: 'The island has no bridge.',                  blank: 'island / bridge',        answer: 'isla / puente',                  hint: 'geografía' },
+    { en: 'She reads the map in the village.',          blank: 'map / village',          answer: 'mapa / pueblo',                  hint: 'lugares' },
+    { en: 'He studies a foreign language.',             blank: 'studies / language',     answer: 'estudia / idioma',               hint: 'educación' },
+    { en: 'Our class starts at eight.',                 blank: 'class / eight',          answer: 'clase / ocho',                   hint: 'educación' },
+    { en: 'She finished her homework before the exam.', blank: 'homework / exam',        answer: 'tarea / examen',                 hint: 'educación' },
+    { en: 'He got a good grade at the university.',     blank: 'grade / university',     answer: 'calificación / universidad',     hint: 'educación' },
+    { en: 'I return books to the library.',             blank: 'books / library',        answer: 'libros / biblioteca',            hint: 'educación' },
+    { en: 'We have a meeting at the office.',           blank: 'meeting / office',       answer: 'reunión / oficina',              hint: 'trabajo' },
+    { en: 'His salary covers the rent.',                blank: 'salary / rent',          answer: 'salario / alquiler',             hint: 'finanzas' },
+    { en: 'She fixes the computer with the keyboard.',  blank: 'computer / keyboard',   answer: 'computadora / teclado',          hint: 'tecnología' },
+    { en: 'The screen shows a new email.',              blank: 'screen / email',         answer: 'pantalla / correo electrónico',  hint: 'tecnología' },
+    { en: 'Change your password on the website.',       blank: 'password / website',     answer: 'contraseña / sitio web',         hint: 'tecnología' },
+    { en: 'She posts a picture at the concert.',        blank: 'picture / concert',      answer: 'foto / concierto',               hint: 'redes sociales' },
+    { en: 'We watch a movie on the big screen.',        blank: 'movie / screen',         answer: 'película / pantalla',            hint: 'entretenimiento' },
+    { en: 'Our team won the match.',                    blank: 'team / match',           answer: 'equipo / partido',               hint: 'deportes' },
+    { en: 'The player scored and won the prize.',       blank: 'player / prize',         answer: 'jugador / premio',               hint: 'deportes' },
+    { en: 'She organizes a birthday party.',            blank: 'birthday / party',       answer: 'cumpleaños / fiesta',            hint: 'celebraciones' },
+    { en: 'I bought a gift and a cake.',                blank: 'gift / cake',            answer: 'regalo / pastel',                hint: 'celebraciones' },
+    { en: 'They had dinner at a restaurant.',           blank: 'dinner / restaurant',    answer: 'cena / restaurante',             hint: 'comida' },
+    { en: 'We ordered from the menu.',                  blank: 'ordered / menu',         answer: 'pedimos / menú',                 hint: 'comida' },
+    { en: 'The waiter brought the bill.',               blank: 'waiter / bill',          answer: 'mesero / cuenta',                hint: 'comida' },
+    { en: 'The doctor gave him medicine.',              blank: 'doctor / medicine',      answer: 'médico / medicina',              hint: 'salud' },
+    { en: 'She has a fever and a headache.',            blank: 'fever / headache',       answer: 'fiebre / dolor de cabeza',       hint: 'salud' },
+    { en: 'I got medicine at the pharmacy.',            blank: 'medicine / pharmacy',    answer: 'medicina / farmacia',            hint: 'salud' },
+    { en: 'Daily exercise improves health.',            blank: 'exercise / health',      answer: 'ejercicio / salud',              hint: 'salud' },
+    { en: 'Check the weather before traveling.',        blank: 'weather / traveling',    answer: 'clima / viajar',                 hint: 'clima' },
+    { en: 'A cloud covers the sun.',                    blank: 'cloud / sun',            answer: 'nube / sol',                     hint: 'clima' },
+    { en: 'Strong wind brings the storm.',              blank: 'wind / storm',           answer: 'viento / tormenta',              hint: 'clima' },
+    { en: 'Snow falls every winter season.',            blank: 'snow / winter',          answer: 'nieve / invierno',               hint: 'estaciones' },
+    { en: 'Flowers bloom in the spring.',               blank: 'flowers / spring',       answer: 'flores / primavera',             hint: 'estaciones' },
+    { en: 'We swim at the beach in summer.',            blank: 'swim / summer',          answer: 'nadamos / verano',               hint: 'estaciones' },
+    { en: 'Leaves fall in autumn.',                     blank: 'leaves / autumn',        answer: 'hojas / otoño',                  hint: 'estaciones' },
+    { en: 'The lion hunts in the forest.',              blank: 'lion / forest',          answer: 'león / bosque',                  hint: 'animales' },
+    { en: 'The monkey climbs the tree.',                blank: 'monkey / tree',          answer: 'mono / árbol',                   hint: 'animales' },
+    { en: 'The rabbit hides from the snake.',           blank: 'rabbit / snake',         answer: 'conejo / serpiente',             hint: 'animales' },
+    { en: 'The horse and the cow are on the farm.',     blank: 'horse / cow',            answer: 'caballo / vaca',                 hint: 'animales' },
+    { en: 'She wore a red shirt and blue shoes.',       blank: 'shirt / shoes',          answer: 'camisa / zapatos',               hint: 'ropa' },
+    { en: 'The black cat sat on the white chair.',      blank: 'black / white',          answer: 'negro / blanco',                 hint: 'colores' },
+    { en: 'Mix purple and pink for brown.',             blank: 'purple / pink',          answer: 'morado / rosa',                  hint: 'colores' },
+    { en: 'The tall man and the short woman talked.',   blank: 'tall / short',           answer: 'alto / baja',                    hint: 'opuestos' },
+    { en: 'The heavy box and the light bag are here.',  blank: 'heavy / light',          answer: 'pesada / ligera',                hint: 'opuestos' },
+    { en: 'Keep it clean and quiet.',                   blank: 'clean / quiet',          answer: 'limpio / tranquilo',             hint: 'adjetivos' },
+    { en: 'She is busy but free tonight.',              blank: 'busy / free',            answer: 'ocupada / libre',                hint: 'adjetivos' },
+    { en: 'We had breakfast before the exam.',          blank: 'breakfast / exam',       answer: 'desayuno / examen',              hint: 'comida + estudio' },
+    { en: 'He ordered dinner from the menu.',           blank: 'dinner / menu',          answer: 'cena / menú',                    hint: 'comida' },
+    { en: 'He drives the car to the airport.',          blank: 'car / airport',          answer: 'carro / aeropuerto',             hint: 'transporte' },
+    { en: 'She walks her dog in the park.',             blank: 'dog / park',             answer: 'perro / parque',                 hint: 'actividad' },
+    { en: 'They read a book in the library.',           blank: 'book / library',         answer: 'libro / biblioteca',             hint: 'educación' },
+    { en: 'We drank coffee and tea.',                   blank: 'coffee / tea',           answer: 'café / té',                      hint: 'bebidas' },
+    { en: 'He saved money at the bank.',                blank: 'money / bank',           answer: 'dinero / banco',                 hint: 'finanzas' },
+    { en: 'They crossed the bridge over the river.',    blank: 'bridge / river',         answer: 'puente / río',                   hint: 'geografía' },
+    { en: 'The bird flew over the forest.',             blank: 'bird / forest',          answer: 'pájaro / bosque',                hint: 'naturaleza' },
+    { en: 'She learned the language in the village.',   blank: 'language / village',     answer: 'idioma / pueblo',                hint: 'educación' },
+    { en: 'He used the map to find the island.',        blank: 'map / island',           answer: 'mapa / isla',                    hint: 'viaje' },
+    { en: 'I need water and food right now.',           blank: 'water / food',           answer: 'agua / comida',                  hint: 'necesidades' },
+    { en: 'She left her phone and wallet behind.',      blank: 'phone / wallet',         answer: 'teléfono / cartera',             hint: 'objetos personales' },
+    { en: 'The doctor and the teacher help people.',    blank: 'doctor / teacher',       answer: 'médico / maestro',               hint: 'profesiones' },
+    { en: 'My brother and sister came to the party.',   blank: 'brother / sister',       answer: 'hermano / hermana',              hint: 'familia' },
+    { en: 'The man and the woman shared a meal.',       blank: 'man / woman',            answer: 'hombre / mujer',                 hint: 'personas' },
+    { en: 'We need a computer and internet.',           blank: 'computer / internet',    answer: 'computadora / internet',         hint: 'tecnología' },
+    { en: 'She bought a camera at the market.',         blank: 'camera / market',        answer: 'cámara / mercado',               hint: 'compras' },
+    { en: 'He lost his ticket and his map.',            blank: 'ticket / map',           answer: 'boleto / mapa',                  hint: 'viaje' },
+    { en: 'The pig and the chicken are on the farm.',   blank: 'pig / chicken',          answer: 'cerdo / pollo',                  hint: 'animales' },
+    { en: 'They watched the sunset at the beach.',      blank: 'sunset / beach',         answer: 'atardecer / playa',              hint: 'naturaleza' },
+    { en: 'The waiter and the cook work together.',     blank: 'waiter / cook',          answer: 'mesero / cocinero',              hint: 'profesiones' },
+    { en: 'She studies and works at the same time.',    blank: 'studies / works',        answer: 'estudia / trabaja',              hint: 'verbos' },
+    { en: 'He writes a report in the office.',          blank: 'report / office',        answer: 'informe / oficina',              hint: 'trabajo' },
+    { en: 'The storm hit the city and the village.',    blank: 'city / village',         answer: 'ciudad / pueblo',                hint: 'lugares' },
+    { en: 'She mixed yellow and blue for green.',       blank: 'yellow / blue',          answer: 'amarillo / azul',                hint: 'colores' },
+    { en: 'He wore a hat and a brown shirt.',           blank: 'hat / shirt',            answer: 'sombrero / camisa',              hint: 'ropa' },
+    { en: 'They drank milk and coffee after dinner.',   blank: 'milk / dinner',          answer: 'leche / cena',                   hint: 'comida' },
+    { en: 'She cleaned the kitchen and the bathroom.',  blank: 'kitchen / bathroom',     answer: 'cocina / baño',                  hint: 'hogar' },
+    { en: 'The garden and the park were beautiful.',    blank: 'garden / park',          answer: 'jardín / parque',                hint: 'lugares' },
+    { en: 'He saved the contract and the report.',      blank: 'contract / report',      answer: 'contrato / informe',             hint: 'trabajo' },
+    { en: 'She bought shoes and a jacket.',             blank: 'shoes / jacket',         answer: 'zapatos / chaqueta',             hint: 'ropa' },
+    { en: 'They drove past the church and the school.', blank: 'church / school',        answer: 'iglesia / escuela',              hint: 'lugares' },
+    { en: 'He repairs cars and trucks.',                blank: 'cars / trucks',          answer: 'carros / camiones',              hint: 'transporte' },
+    { en: 'She baked bread and cookies.',               blank: 'bread / cookies',        answer: 'pan / galletas',                 hint: 'comida' },
+    { en: 'He painted the wall and the ceiling.',       blank: 'wall / ceiling',         answer: 'pared / techo',                  hint: 'hogar' },
+    { en: 'The cat and the mouse ran fast.',            blank: 'cat / mouse',            answer: 'gato / ratón',                   hint: 'animales' },
+    { en: 'She planted roses and sunflowers.',          blank: 'roses / sunflowers',     answer: 'rosas / girasoles',              hint: 'naturaleza' },
+    { en: 'He fixed the door and the window.',          blank: 'door / window',          answer: 'puerta / ventana',               hint: 'hogar' },
+    { en: 'They swam in the lake and the river.',       blank: 'lake / river',           answer: 'lago / río',                     hint: 'naturaleza' },
+    { en: 'She plays the guitar and the piano.',        blank: 'guitar / piano',         answer: 'guitarra / piano',               hint: 'música' },
+    { en: 'He wore a suit and a tie.',                  blank: 'suit / tie',             answer: 'traje / corbata',                hint: 'ropa' },
+    { en: 'The nurse and the doctor treated the patient.', blank: 'nurse / patient',     answer: 'enfermera / paciente',           hint: 'salud' },
+    { en: 'She bought rice and beans at the store.',    blank: 'rice / beans',           answer: 'arroz / frijoles',               hint: 'comida' },
+    { en: 'He broke the cup and the plate.',            blank: 'cup / plate',            answer: 'taza / plato',                   hint: 'hogar' },
+    { en: 'The spider and the fly are insects.',        blank: 'spider / fly',           answer: 'araña / mosca',                  hint: 'animales' },
+    { en: 'She wore a ring and a necklace.',            blank: 'ring / necklace',        answer: 'anillo / collar',                hint: 'accesorios' },
+    { en: 'He read the letter and the contract.',       blank: 'letter / contract',      answer: 'carta / contrato',               hint: 'documentos' },
+    { en: 'They visited the museum and the castle.',    blank: 'museum / castle',        answer: 'museo / castillo',               hint: 'turismo' },
+    { en: 'She drank juice and water for breakfast.',   blank: 'juice / water',          answer: 'jugo / agua',                    hint: 'bebidas' },
+    { en: 'The pilot and the passenger boarded the plane.', blank: 'pilot / passenger', answer: 'piloto / pasajero',              hint: 'viaje' },
   ],
 
   // ─────────────────────────────────────────
@@ -708,6 +720,27 @@ function updateLevelBadge() {
 }
 
 // =============================================
+//  HELPER: ¿es tarjeta fill-in-the-blank?
+//  Nivel 1 y 2 tienen campo "blank"; 3-5 no.
+// =============================================
+function isBlankCard(card) {
+  return typeof card.blank === 'string' && card.blank.length > 0;
+}
+
+// Construye la frase con ___ en lugar de las palabras de blank
+function buildBlankSentence(card) {
+  // blank puede ser "word1 / word2"; sustituimos cada parte en la frase
+  const parts = card.blank.split('/').map(p => p.trim());
+  let sentence = card.en;
+  parts.forEach(word => {
+    // Reemplazar la primera aparición exacta (case-insensitive) con ___
+    const re = new RegExp('\\b' + word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+    sentence = sentence.replace(re, '___');
+  });
+  return sentence;
+}
+
+// =============================================
 //  MOSTRAR TARJETA
 // =============================================
 function showCard(index) {
@@ -719,6 +752,7 @@ function showCard(index) {
   const input     = document.getElementById('answer-input');
   const countdown = document.getElementById('auto-next-countdown');
   const btnNext   = document.getElementById('btn-next');
+  const labelEl   = front.querySelector('.card-label');
 
   flashcard.classList.remove('flipped');
   front.classList.remove('correct-state', 'wrong-state');
@@ -735,12 +769,25 @@ function showCard(index) {
   void flashcard.offsetWidth;
   flashcard.classList.add('new-card');
 
-  // Mostrar frase + etiqueta de estructura
-  document.getElementById('card-word').textContent        = card.en;
-  document.getElementById('card-answer-text').textContent = card.es;
-
   const hintEl = document.getElementById('card-hint');
-  if (hintEl) hintEl.textContent = card.hint ? `[ ${card.hint} ]` : '';
+
+  if (isBlankCard(card)) {
+    // MODO FILL-IN-THE-BLANK (niveles 1-2)
+    const sentence = buildBlankSentence(card);
+    document.getElementById('card-word').textContent = sentence;
+    // En la parte trasera mostramos la frase completa + la respuesta
+    document.getElementById('card-answer-text').textContent = card.answer;
+    if (labelEl) labelEl.textContent = '¿Cómo se dice ___ en español?';
+    input.placeholder = 'Escribe la traducción en español...';
+    if (hintEl) hintEl.textContent = card.hint ? `[ ${card.hint} ]` : '';
+  } else {
+    // MODO FRASE COMPLETA (niveles 3-5)
+    document.getElementById('card-word').textContent        = card.en;
+    document.getElementById('card-answer-text').textContent = card.es;
+    if (labelEl) labelEl.textContent = 'Traduce al español';
+    input.placeholder = 'Escribe la traducción en español...';
+    if (hintEl) hintEl.textContent = card.hint ? `[ ${card.hint} ]` : '';
+  }
 
   document.getElementById('card-counter').textContent =
     `Tarjeta ${index + 1} de ${deck.length}`;
@@ -780,12 +827,48 @@ function checkAnswer() {
     return;
   }
 
-  const flashcard = document.getElementById('flashcard');
-  const front     = flashcard.querySelector('.card-front');
+  const flashcard  = document.getElementById('flashcard');
+  const front      = flashcard.querySelector('.card-front');
+  const card       = deck[currentIndex];
+  const blank      = isBlankCard(card);
 
-  // Aceptar múltiples traducciones separadas por /
-  const accepted   = deck[currentIndex].es.split('/').map(a => normalizeFrase(a));
-  const isCorrect  = accepted.includes(normalizeFrase(userAns));
+  // ── Obtener la respuesta correcta según el modo ──
+  // En blank: "trad1 / trad2" — el usuario puede escribir cualquiera de las partes
+  // En frase completa: "traducción completa" con variantes separadas por /
+  let correctText;
+  let isCorrect;
+
+  if (blank) {
+    // Nivel 1: answer = "manzana" → usuario escribe "manzana"
+    // Nivel 2: answer = "hotel / aeropuerto" → el usuario puede escribir
+    //   - "hotel / aeropuerto" (ambas en orden)
+    //   - "aeropuerto / hotel" (ambas en orden inverso)
+    //   - solo una de las dos (aceptamos si escribe al menos una correctamente)
+    correctText = card.answer;
+    const parts = card.answer.split('/').map(p => normalizeFrase(p));
+    const userParts = userAns.split('/').map(p => normalizeFrase(p));
+
+    if (parts.length === 1) {
+      // Nivel 1: comparación directa
+      isCorrect = parts[0] === normalizeFrase(userAns);
+    } else {
+      // Nivel 2: el usuario debe escribir ambas palabras (en cualquier orden)
+      // Aceptamos si escribe "trad1 / trad2" o "trad2 / trad1"
+      // También aceptamos si escribe ambas separadas por coma, espacio, etc.
+      const userNorm = normalizeFrase(userAns.replace(/[,;\/]/g, ' '));
+      const allMatch = parts.every(p => userNorm.includes(p));
+      const directMatch = (
+        (userParts[0] === parts[0] && userParts[1] === parts[1]) ||
+        (userParts[0] === parts[1] && userParts[1] === parts[0])
+      );
+      isCorrect = allMatch || directMatch;
+    }
+  } else {
+    // Niveles 3-5: comparación de frase completa
+    correctText = card.es;
+    const accepted = card.es.split('/').map(a => normalizeFrase(a));
+    isCorrect = accepted.includes(normalizeFrase(userAns));
+  }
 
   const data = loadData();
   data.totalCorrect += isCorrect ? 1 : 0;
@@ -793,7 +876,7 @@ function checkAnswer() {
 
   if (!isCorrect) {
     // Guardar la frase en inglés como "palabra difícil"
-    const key = deck[currentIndex].en.slice(0, 60); // recortar para no saturar
+    const key = card.en.slice(0, 60); // recortar para no saturar
     data.hardWords[key] = (data.hardWords[key] || 0) + 1;
   } else if (data.currentLevel < MAX_LEVEL) {
     data.levelCorrect = (data.levelCorrect || 0) + 1;
@@ -827,7 +910,8 @@ function checkAnswer() {
   } else {
     input.classList.add('wrong-input');
     front.classList.add('wrong-state');
-    feedback.textContent = `Incorrecto. Traducción: "${deck[currentIndex].es}"`;
+    const respuesta = isBlankCard(card) ? card.answer : card.es;
+    feedback.textContent = `Incorrecto. Respuesta: "${respuesta}"`;
     feedback.className   = 'feedback wrong';
     setTimeout(() => flashcard.classList.add('flipped'), 400);
   }
@@ -990,131 +1074,4 @@ async function searchAndPreview(event) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const ct = res.headers.get('content-type') || '';
     if (!ct.includes('application/json')) throw new Error('No JSON');
-    const json = await res.json();
-    if (typeof json !== 'object' || json === null ||
-        json.responseStatus !== 200 ||
-        typeof json.responseData?.translatedText !== 'string') throw new Error('Inválida');
-    const enWord = sanitizeWord(json.responseData.translatedText);
-    if (!enWord) throw new Error('Vacía');
-    showAddModal(esWord, enWord);
-  } catch {
-    showAddModal(esWord, '', true);
-  } finally {
-    btn.disabled = false; btn.textContent = 'Buscar traducción';
-  }
-}
-
-function showAddModal(es, en, isError = false) {
-  const note = document.getElementById('modal-note');
-  document.getElementById('modal-es').textContent = es;
-  document.getElementById('modal-en').value       = en;
-  note.textContent = isError
-    ? 'No se encontró traducción automática. Escribe la traducción manualmente:'
-    : 'Traducción encontrada. Puedes editarla antes de guardar:';
-  note.style.color = isError ? 'var(--red)' : 'var(--text-soft)';
-  document.getElementById('modal-overlay').classList.add('active');
-  const f = document.getElementById('modal-en'); f.focus(); f.select();
-}
-
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('active');
-}
-
-function confirmAddCard() {
-  const es = sanitizeWord(document.getElementById('modal-es').textContent);
-  const en = sanitizeWord(document.getElementById('modal-en').value);
-  if (!en || !es) { alert('Completa ambos campos antes de guardar.'); return; }
-
-  const data = loadData();
-  if (data.customCards.length >= SECURITY.MAX_CUSTOM_CARDS) {
-    alert(`Límite de ${SECURITY.MAX_CUSTOM_CARDS} tarjetas alcanzado.`);
-    closeModal(); return;
-  }
-  const allCards = [...Object.values(WORDS_BY_LEVEL).flat(), ...data.customCards];
-  if (allCards.some(c => c.es.toLowerCase() === es.toLowerCase() ||
-                         c.en.toLowerCase() === en.toLowerCase())) {
-    alert(`La frase "${es}" ya existe en el mazo.`);
-    closeModal(); return;
-  }
-  data.customCards.push({ en, es, hint: 'personalizada' });
-  saveData(data);
-  deck = buildDeck();
-  document.getElementById('input-spanish').value = '';
-  closeModal();
-  renderCustomCards();
-}
-
-function renderCustomCards() {
-  const data      = loadData();
-  const container = document.getElementById('custom-cards-list');
-  if (data.customCards.length === 0) {
-    container.innerHTML = '<p class="empty-msg">Aún no has agregado tarjetas personalizadas.</p>';
-    return;
-  }
-  container.innerHTML = data.customCards.map((card, index) => `
-    <div class="custom-card-item">
-      <div class="custom-card-words">
-        <span class="custom-card-es">${escapeHTML(card.es)}</span>
-        <span class="custom-card-sep">→</span>
-        <span class="custom-card-en">${escapeHTML(card.en)}</span>
-      </div>
-      <button class="btn-delete" data-index="${Number(index)}" title="Eliminar tarjeta">✕</button>
-    </div>
-  `).join('');
-}
-
-function deleteCard(index) {
-  const data = loadData();
-  data.customCards.splice(index, 1);
-  saveData(data);
-  deck = buildDeck();
-  renderCustomCards();
-}
-
-// =============================================
-//  INICIALIZACIÓN Y EVENT LISTENERS
-// =============================================
-document.addEventListener('DOMContentLoaded', () => {
-
-  // Navegación
-  document.querySelectorAll('.nav-btn[data-section]').forEach(btn => {
-    btn.addEventListener('click', () => showSection(btn.dataset.section));
-  });
-
-  // Estudiar
-  document.getElementById('btn-check').addEventListener('click', checkAnswer);
-  document.getElementById('btn-next').addEventListener('click', nextCard);
-  document.getElementById('answer-input').addEventListener('keydown', e => {
-    if (e.key !== 'Enter') return;
-    if (!answered) checkAnswer(); else nextCard();
-  });
-
-  // Progreso
-  document.getElementById('btn-reset').addEventListener('click', resetProgress);
-
-  // Mis Tarjetas
-  document.getElementById('search-form').addEventListener('submit', searchAndPreview);
-  document.getElementById('custom-cards-list').addEventListener('click', e => {
-    const btn = e.target.closest('.btn-delete');
-    if (!btn) return;
-    const idx = parseInt(btn.dataset.index, 10);
-    if (!Number.isNaN(idx)) deleteCard(idx);
-  });
-
-  // Modal
-  document.getElementById('btn-modal-close').addEventListener('click',   closeModal);
-  document.getElementById('btn-modal-cancel').addEventListener('click',  closeModal);
-  document.getElementById('btn-modal-confirm').addEventListener('click', confirmAddCard);
-  document.getElementById('modal-en').addEventListener('keydown', e => {
-    if (e.key === 'Enter') confirmAddCard();
-  });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-  document.getElementById('modal-overlay').addEventListener('click', e => {
-    if (e.target.id === 'modal-overlay') closeModal();
-  });
-
-  // Arranque
-  deck = buildDeck();
-  showCard(currentIndex);
-  updateLevelBadge();
-});
+    const json 
