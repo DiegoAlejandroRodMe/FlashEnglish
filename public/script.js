@@ -674,10 +674,12 @@ function buildDeck() {
 
   let ordered = [];
   for (let l = 1; l <= level; l++) {
-    ordered = ordered.concat(shuffle(WORDS_BY_LEVEL[l]));
+    const tagged = WORDS_BY_LEVEL[l].map(c => Object.assign({}, c, { _level: l }));
+    ordered = ordered.concat(shuffle(tagged));
   }
   if (data.customCards.length > 0) {
-    ordered = ordered.concat(shuffle(data.customCards));
+    const tagged = data.customCards.map(c => Object.assign({}, c, { _level: 4 }));
+    ordered = ordered.concat(shuffle(tagged));
   }
   return ordered;
 }
@@ -700,7 +702,13 @@ function showSection(name) {
 function updateLevelBadge() {
   const data  = loadData();
   const badge = document.getElementById('level-badge');
-  if (badge) badge.textContent = `Nivel ${data.currentLevel} · ${LEVEL_NAMES[data.currentLevel]}`;
+  if (badge) {
+    badge.textContent = `Nivel ${data.currentLevel} · ${LEVEL_NAMES[data.currentLevel]}`;
+    badge.classList.remove('lv3','lv4','lv5');
+    if (data.currentLevel === 3) badge.classList.add('lv3');
+    if (data.currentLevel === 4) badge.classList.add('lv4');
+    if (data.currentLevel === 5) badge.classList.add('lv5');
+  }
 
   const bar = document.getElementById('level-progress-bar');
   if (bar) {
@@ -812,23 +820,48 @@ function showCard(index) {
 
       // Spanish translation of the full sentence, smaller
       translationEl.textContent = c.es || '';
-    } else {
-      // Full sentence mode: EN sentence on back, ES below
-      sentenceEl.textContent   = c.en;
-      keywordsEl.innerHTML     = '';
+    } else if (c._level === 3) {
+      // L3: showed ES on front → show EN on back as the "answer"
+      sentenceEl.textContent    = c.en;
+      keywordsEl.innerHTML      = '';
       translationEl.textContent = c.es;
+    } else {
+      // L4+: showed EN on front → show ES on back
+      sentenceEl.textContent    = c.es;
+      keywordsEl.innerHTML      = '';
+      translationEl.textContent = c.en;
     }
   }
 
+  // Determine card level
+  const cardLevel = card._level || loadData().currentLevel;
+
+  // Apply per-level border color to the card
+  const levelColors = { 1: '', 2: '', 3: 'level-3', 4: 'level-4', 5: 'level-5' };
+  flashcard.classList.remove('level-3', 'level-4', 'level-5');
+  if (levelColors[cardLevel]) flashcard.classList.add(levelColors[cardLevel]);
+
   if (isBlankCard(card)) {
-    // MODO FILL-IN-THE-BLANK (niveles 1-2 y 5)
+    // NIVEL 1, 2 y 5: fill-in-the-blank, usuario escribe EN inglés
     const sentence = buildBlankSentence(card);
     document.getElementById('card-word').textContent = sentence;
-    if (labelEl) labelEl.textContent = '¿Qué palabra en inglés completa la frase?';
-    input.placeholder = 'Escribe la palabra en inglés...';
+    if (card._level === 5 || (card.en && card.en.startsWith('Context:'))) {
+      if (labelEl) labelEl.textContent = 'Lee el texto y completa la frase en inglés';
+    } else if (card.blank && card.blank.includes('/')) {
+      if (labelEl) labelEl.textContent = '¿Qué dos palabras en inglés completan la frase?';
+    } else {
+      if (labelEl) labelEl.textContent = '¿Qué palabra en inglés completa la frase?';
+    }
+    input.placeholder = 'Escribe la(s) palabra(s) en inglés...';
+    if (hintEl) hintEl.textContent = card.hint ? `[ ${card.hint} ]` : '';
+  } else if (card._level === 3) {
+    // NIVEL 3: mostrar frase en ESPAÑOL, usuario escribe en INGLÉS
+    document.getElementById('card-word').textContent = card.es;
+    if (labelEl) labelEl.textContent = 'Traduce al inglés';
+    input.placeholder = 'Escribe la traducción en inglés...';
     if (hintEl) hintEl.textContent = card.hint ? `[ ${card.hint} ]` : '';
   } else {
-    // MODO FRASE COMPLETA (niveles 3-5)
+    // NIVEL 4+: mostrar frase en INGLÉS, usuario escribe en ESPAÑOL
     document.getElementById('card-word').textContent = card.en;
     if (labelEl) labelEl.textContent = 'Traduce al español';
     input.placeholder = 'Escribe la traducción en español...';
@@ -905,8 +938,13 @@ function checkAnswer() {
       );
       isCorrect = allMatch || directMatch;
     }
+  } else if (card._level === 3) {
+    // Nivel 3: usuario escribe en inglés, comparamos contra card.en
+    correctText = card.en;
+    const accepted = card.en.split('/').map(a => normalizeFrase(a));
+    isCorrect = accepted.includes(normalizeFrase(userAns));
   } else {
-    // Niveles 3-5: comparación de frase completa
+    // Niveles 4-5: comparación de frase completa ES
     correctText = card.es;
     const accepted = card.es.split('/').map(a => normalizeFrase(a));
     isCorrect = accepted.includes(normalizeFrase(userAns));
@@ -952,8 +990,8 @@ function checkAnswer() {
   } else {
     input.classList.add('wrong-input');
     front.classList.add('wrong-state');
-    const respuesta = isBlankCard(card) ? card.blank : card.es;
-    feedback.textContent = `Incorrecto. La palabra era: "${respuesta}"`;
+    const respuesta = isBlankCard(card) ? card.blank : (card._level === 3 ? card.en : card.es);
+    feedback.textContent = `Incorrecto. La respuesta era: "${respuesta}"`;
     feedback.className   = 'feedback wrong';
     setTimeout(() => flashcard.classList.add('flipped'), 400);
   }

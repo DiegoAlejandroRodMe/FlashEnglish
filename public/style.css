@@ -390,15 +390,32 @@ body {
 }
 
 /* =============================================
+   COLOR POR NIVEL (borde tarjeta frente)
+   L1: gris (default)  L2: verde azulado
+   L3: naranja (ES→EN) L4: morado   L5: dorado
+   ============================================= */
+.card.level-3 .card-front { border-color: #f59e0b; }
+.card.level-3 .card-back  { border-color: #f59e0b; }
+.card.level-4 .card-front { border-color: #7c3aed; }
+.card.level-4 .card-back  { border-color: #7c3aed; }
+.card.level-5 .card-front { border-color: #059669; }
+.card.level-5 .card-back  { border-color: #059669; }
+
+/* Level badge color reflects current level */
+.level-badge.lv3 { background: rgba(245,158,11,0.15); color: #b45309; }
+.level-badge.lv4 { background: rgba(124,58,237,0.15); color: #5b21b6; }
+.level-badge.lv5 { background: rgba(5,150,105,0.15);  color: #065f46; }
+
+/* =============================================
    ESTADOS DE RESPUESTA
    ============================================= */
 .card-front.correct-state {
-  border-color: var(--cyan);
+  border-color: var(--cyan) !important;
   background: rgba(0, 255, 255, 0.06);
 }
 
 .card-front.wrong-state {
-  border-color: var(--red);
+  border-color: var(--red) !important;
   background: rgba(255, 99, 71, 0.05);
 }
 
@@ -961,51 +978,4 @@ body {
   font-weight: 600;
   color: var(--text-soft);
   margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.accuracy-bar-track {
-  width: 100%;
-  height: 10px;
-  background: var(--gray);
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.accuracy-bar-fill {
-  height: 100%;
-  background: var(--cyan);
-  border-radius: 99px;
-  width: 0%;
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hard-words-title {
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 14px;
-}
-
-.hard-words-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 32px;
-}
-
-.hard-word-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--white);
-  border: 1.5px solid var(--gray);
-  border-left: 4px solid var(--red);
-  border-radius: 8px;
-  padding: 10px 16px;
-  animation: fadeIn 0.25s ease;
-}
-
-.hard-word-text {
-  font-weight: 700;
-  font-size: 0.95rem;
+  text-transform: 
